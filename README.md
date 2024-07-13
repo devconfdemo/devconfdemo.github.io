@@ -1,3 +1,9 @@
-# Hello from Draftsman.io
+# Getting started
 
-Your repo is initialized, head over to [tracepaper.draftsman.io](https://tracepaper.draftsman.io) and let's model some domain!
+Open a terminal and use the following command to start the development server (requires Python).
+
+```commandline
+py dev-server.py
+```
+
+And browse to [http://localhost:8181](http://localhost:8181)

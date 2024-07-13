@@ -1,0 +1,30 @@
+[
+  {
+    "type": "meta",
+    "message": "This file is managed by Tracepaper"
+  },
+  {
+    "name": "userId",
+    "title": "Userid",
+    "type": "String",
+    "pattern": "",
+    "placeholder": "",
+    "default": ""
+  },
+  {
+    "name": "score",
+    "title": "Score",
+    "type": "String",
+    "pattern": "",
+    "placeholder": "",
+    "default": ""
+  },
+  {
+    "name": "comment",
+    "title": "Comment",
+    "type": "String",
+    "pattern": "",
+    "placeholder": "",
+    "default": ""
+  }
+]

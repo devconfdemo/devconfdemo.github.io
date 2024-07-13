@@ -1,0 +1,13 @@
+# This file is NOT managed by Tracepaper, and can be customized.
+query FilterFeedback {
+  Feedback {
+    filter {
+       resultset { 
+        key
+        userId
+        score
+        comment
+      }
+    }
+  }
+}

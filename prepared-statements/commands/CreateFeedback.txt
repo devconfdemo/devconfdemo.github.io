@@ -1,0 +1,8 @@
+# This file is managed by Tracepaper
+mutation Create($userId: String = "", $score: String = "", $comment: String = "") {
+  Feedback{
+    create(input: {userId: $userId,score: $score,comment: $comment}) {
+       correlationId
+    }
+  }
+}

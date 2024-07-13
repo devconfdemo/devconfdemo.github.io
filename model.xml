@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<draftsman project-name="LiveDemo" xmlns="https://tracepaper.draftsman.io">
+	<global>
+	</global>
+	<events>
+		<event graphql-namespace="Feedback" graphql-name="create" name="CreateFeedbackRequested" type="ActorEvent">
+			<field name="userId" type="String"></field>
+			<field name="score" type="String"></field>
+			<field name="comment" type="String"></field>
+		</event>
+		<event name="FeedbackCreated" source="Core.Feedback" type="DomainEvent">
+			<field name="userId" type="String"></field>
+			<field name="score" type="Int"></field>
+			<field name="comment" type="String"></field>
+		</event>
+		<event name="FileUploaded" type="DomainEvent" source="appsync">
+			<field name="bucket" type="String"></field>
+			<field name="uri" type="String"></field>
+			<field name="location" type="String"></field>
+			<field name="username" type="String"></field>
+		</event>
+	</events>
+	<domain>
+		<subdomain name="Core">
+			<aggregate name="Feedback" business-key="userId" event-ttl="-1" snapshot-interval="100" backup-interval-days="0" backup-ttl-days="0">
+				<field name="userId" type="String"></field>
+				<field name="score" type="Int"></field>
+				<field name="comment" type="String"></field>
+				<command name="Create">
+					<trigger source="CreateFeedbackRequested" key-field="userId">
+						<mapping target="userId" value="userId"></mapping>
+						<mapping target="score" value="score"></mapping>
+						<mapping target="comment" value="comment"></mapping>
+					</trigger>
+					<processor type="emit-event" ref="FeedbackCreated" id="eYHSmS">
+						<mapping target="userId" value="#flow.userId"></mapping>
+						<mapping target="score" value="#flow.score"></mapping>
+						<mapping target="comment" value="#flow.comment"></mapping>
+					</processor>
+					<test-case name="HappyFlow" trigger-event="CreateFeedbackRequested" expected-processing-status="success">
+						<input name="userId" type="String" value="myId"></input>
+						<input name="score" type="Int" value="5"></input>
+						<input name="comment" type="String" value="Hello World!"></input>
+						<expected domain-event="FeedbackCreated" id="O03G7L">
+							<field name="userId" type="String" value="myId"></field>
+							<field name="score" type="Int" value="5"></field>
+							<field name="comment" type="String" value="Hello World!"></field>
+						</expected>
+						<expected-state pk="myId">{
+  "userId": "myId",
+  "score": 5,
+  "comment": "Hello World!",
+  "version": 1
+}</expected-state>
+					</test-case>
+				</command>
+				<event-handler on="FeedbackCreated">
+					<mapping target="userId" value="userId" operand="set"></mapping>
+					<mapping target="score" value="score" operand="set"></mapping>
+					<mapping target="comment" value="comment" operand="set"></mapping>
+				</event-handler>
+			</aggregate>
+		</subdomain>
+	</domain>
+	<views>
+		<view name="Feedback" data-retention-days="-1" exclude-notification="false">
+			<field name="userId" type="String" pk="true"></field>
+			<field name="score" type="Int"></field>
+			<field name="comment" type="String"></field>
+			<snapshot-handler id="EALML6" processor="item" sub-domain="Core" aggregate="Feedback" key-mapping="userId">
+				<mapping target="userId" value="userId" operand="set"></mapping>
+				<mapping target="score" value="score" operand="set"></mapping>
+				<mapping target="comment" value="comment" operand="set"></mapping>
+			</snapshot-handler>
+			<query graphql-namespace="Feedback" field-name="get" type="get" authorization="anonymous" use-canonical-search="false"></query>
+			<query graphql-namespace="Feedback" field-name="filter" type="filter" authorization="anonymous" use-canonical-search="false"></query>
+		</view>
+	</views>
+	<projections>
+	</projections>
+	<notifiers>
+		<notifier name="SetupEnvironment">
+			<trigger source="@afterDeployment">
+				<mapping target="dummy" value="#''"></mapping>
+			</trigger>
+			<activity type="iam-create-systemuser" fail-silent="true" id="vMB9LZ"></activity>
+			<activity id="vkYuPh" type="create-iam-group" group-name="#'expresion'"></activity>
+			<activity id="wjJU3t" group-name="#'administrator'" type="add-user-to-iam-group" username="#'expresion'"></activity>
+		</notifier>
+	</notifiers>
+	<functional-scenarios clean-db="true" clean-iam="true" minimum-event-coverage="80" minimum-view-coverage="80">
+		<scenario name="Gate">
+			<activity path="Feedback.create" type="mutation" description="Create a feedback entity" id="cpFMpF">
+				<input name="userId" type="String" value="myId"></input>
+				<input name="score" type="String" value="5"></input>
+				<input name="comment" type="String" value="Hello World!"></input>
+				<expected-trace command="Core.Feedback.Create" status="success"></expected-trace>
+			</activity>
+			<activity path="Feedback.get" type="query" view="Feedback" description="Check if the feedback view item is created" id="hOeJOZ">
+				<input name="key" type="String" value="myId"></input>
+				<expect-value name="score" type="Int" value="5"></expect-value>
+				<expect-value name="comment" type="String" value="Hello World!"></expect-value>
+			</activity>
+		</scenario>
+	</functional-scenarios>
+</draftsman>
