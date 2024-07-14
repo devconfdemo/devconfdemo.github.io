@@ -5,7 +5,7 @@
 	<events>
 		<event graphql-namespace="Feedback" graphql-name="create" name="CreateFeedbackRequested" type="ActorEvent">
 			<field name="userId" type="String"></field>
-			<field name="score" type="String"></field>
+			<field name="score" type="Int"></field>
 			<field name="comment" type="String"></field>
 		</event>
 		<event name="FeedbackCreated" source="Core.Feedback" type="DomainEvent">
@@ -90,9 +90,9 @@
 	</notifiers>
 	<functional-scenarios clean-db="true" clean-iam="true" minimum-event-coverage="80" minimum-view-coverage="80">
 		<scenario name="Gate">
-			<activity path="Feedback.create" type="mutation" description="Create a feedback entity" id="cpFMpF">
+			<activity path="Feedback.create" type="mutation" description="Create feedback instance" id="nx1ELg">
 				<input name="userId" type="String" value="myId"></input>
-				<input name="score" type="String" value="5"></input>
+				<input name="score" type="Int" value="5"></input>
 				<input name="comment" type="String" value="Hello World!"></input>
 				<expected-trace command="Core.Feedback.Create" status="success"></expected-trace>
 			</activity>

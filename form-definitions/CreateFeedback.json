@@ -14,7 +14,7 @@
   {
     "name": "score",
     "title": "Score",
-    "type": "String",
+    "type": "Int",
     "pattern": "",
     "placeholder": "",
     "default": ""

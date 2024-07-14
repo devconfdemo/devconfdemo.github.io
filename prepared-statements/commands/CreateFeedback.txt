@@ -1,5 +1,5 @@
 # This file is managed by Tracepaper
-mutation Create($userId: String = "", $score: String = "", $comment: String = "") {
+mutation Create($userId: String = "", $score: Int = 0, $comment: String = "") {
   Feedback{
     create(input: {userId: $userId,score: $score,comment: $comment}) {
        correlationId
