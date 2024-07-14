@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <title>Live Demo</title>
+        <script src="/js/configuration.js"></script>
+        <script src="/js/configuration-staging.js"></script>
+
+        <link rel="stylesheet" href="/css/draftsman.css" />
+        <script src="/js/framework.js"></script>
+        <script src="/js/cache.js"></script>
+        <script src="https://unpkg.com/@vimesh/ui"></script>
+        <script src="/js/utils.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+        <script src="https://unpkg.com/alpinejs" defer></script>
+
+        <!-- header -->
+        <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+        <!-- header end -->
+
+    </head>
+    <body x-data x-import="">
+
+    <!-- The command object -->
+    <draftsman-mutation command="CreateFeedback"
+                        x-include="/prepared-statements/commands/CreateFeedback.txt">
+    </draftsman-mutation>
+
+    <div x-import="utils/tables">
+        <ui-trace-table></ui-trace-table>
+    </div>
+
+    <draftsman-trace command="CreateFeedback"
+                     status="success"
+                     @trace="location.href = '/thanks'">
+    </draftsman-trace>
+
+    <div x-data="{command: {userId: $persist(makeid(37)), score: 3}}"
+         class="card bg-base-100 w-90 shadow-xl m-5">
+        <div class="card-body">
+            <h2 class="card-title">Wat vond je van de demo?</h2>
+            <p>
+                <input type="range" min="1" max="5" class="range" step="1"
+                       x-model="command.score"/>
+                <div class="flex w-full justify-between px-2 text-xs">
+                    <span>saai</span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span>geweldig</span>
+                </div>
+
+            <label class="input input-bordered flex items-center gap-2">
+                In 1 woord:
+                <input type="text" class="grow" placeholder="Geweldig" x-model="command.oneWord"/>
+            </label>
+
+            <textarea class="textarea textarea-bordered"
+                      x-model="command.comment"
+                      placeholder="Wil je nog commentaar geven?"></textarea>
+                <pre x-text="JSON.stringify(command,null,2)"></pre>
+            </p>
+            <div class="card-actions justify-end">
+                <button @click="$store.mutation.send('CreateFeedback',command)" class="btn btn-primary">Verzend!</button>
+            </div>
+        </div>
+    </div>
+
+    </body>
+</html>
