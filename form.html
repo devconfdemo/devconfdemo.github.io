@@ -39,7 +39,7 @@
                      @trace="location.href = '/thanks'">
     </draftsman-trace>
 
-    <div x-data="{command: {userId: $persist(makeid(37)), score: 3}}"
+    <div x-data="{command: {userId: $persist(makeid(37)), score: 3, comment: ''}}"
          class="card bg-base-100 w-90 shadow-xl m-5">
         <div class="card-body">
             <h2 class="card-title">Wat vond je van de demo?</h2>
@@ -62,10 +62,11 @@
             <textarea class="textarea textarea-bordered"
                       x-model="command.comment"
                       placeholder="Wil je nog commentaar geven?"></textarea>
-                <pre x-text="JSON.stringify(command,null,2)"></pre>
             </p>
             <div class="card-actions justify-end">
-                <button @click="$store.mutation.send('CreateFeedback',command)" class="btn btn-primary">Verzend!</button>
+                <button @click="$store.mutation.send('CreateFeedback',command)"
+                        :disabled="!command.score || !command.oneWord"
+                        class="btn btn-primary">Verzend!</button>
             </div>
         </div>
     </div>
