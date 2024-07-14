@@ -26,5 +26,13 @@
     "pattern": "",
     "placeholder": "",
     "default": ""
+  },
+  {
+    "name": "oneWord",
+    "title": "Oneword",
+    "type": "String",
+    "pattern": "",
+    "placeholder": "",
+    "default": ""
   }
 ]

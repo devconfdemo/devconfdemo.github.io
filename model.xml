@@ -7,11 +7,13 @@
 			<field name="userId" type="String"></field>
 			<field name="score" type="Int"></field>
 			<field name="comment" type="String"></field>
+			<field name="oneWord" type="String"></field>
 		</event>
 		<event name="FeedbackCreated" source="Core.Feedback" type="DomainEvent">
 			<field name="userId" type="String"></field>
 			<field name="score" type="Int"></field>
 			<field name="comment" type="String"></field>
+			<field name="oneWord" type="String"></field>
 		</event>
 		<event name="FileUploaded" type="DomainEvent" source="appsync">
 			<field name="bucket" type="String"></field>
@@ -26,38 +28,45 @@
 				<field name="userId" type="String"></field>
 				<field name="score" type="Int"></field>
 				<field name="comment" type="String"></field>
+				<field name="oneWord" type="String"></field>
 				<command name="Create">
 					<trigger source="CreateFeedbackRequested" key-field="userId">
 						<mapping target="userId" value="userId"></mapping>
 						<mapping target="score" value="score"></mapping>
 						<mapping target="comment" value="comment"></mapping>
+						<mapping target="oneWord" value="oneWord"></mapping>
 					</trigger>
-					<processor type="emit-event" ref="FeedbackCreated" id="eYHSmS">
-						<mapping target="userId" value="#flow.userId"></mapping>
-						<mapping target="score" value="#flow.score"></mapping>
-						<mapping target="comment" value="#flow.comment"></mapping>
-					</processor>
 					<test-case name="HappyFlow" trigger-event="CreateFeedbackRequested" expected-processing-status="success">
 						<input name="userId" type="String" value="myId"></input>
 						<input name="score" type="Int" value="5"></input>
 						<input name="comment" type="String" value="Hello World!"></input>
-						<expected domain-event="FeedbackCreated" id="O03G7L">
+						<input name="oneWord" type="String" value="Awesome"></input>
+						<expected domain-event="FeedbackCreated" id="Lj0QPu">
 							<field name="userId" type="String" value="myId"></field>
 							<field name="score" type="Int" value="5"></field>
 							<field name="comment" type="String" value="Hello World!"></field>
+							<field name="oneWord" type="String" value="Awesome"></field>
 						</expected>
 						<expected-state pk="myId">{
   "userId": "myId",
-  "score": 5,
   "comment": "Hello World!",
-  "version": 1
+  "oneWord": "Awesome",
+  "version": 1,
+  "score": 5
 }</expected-state>
 					</test-case>
+					<processor type="emit-event" ref="FeedbackCreated" id="Jf1o5o">
+						<mapping target="userId" value="#flow.userId"></mapping>
+						<mapping target="score" value="#flow.score"></mapping>
+						<mapping target="comment" value="#flow.comment"></mapping>
+						<mapping target="oneWord" value="#flow.oneWord"></mapping>
+					</processor>
 				</command>
 				<event-handler on="FeedbackCreated">
 					<mapping target="userId" value="userId" operand="set"></mapping>
 					<mapping target="score" value="score" operand="set"></mapping>
 					<mapping target="comment" value="comment" operand="set"></mapping>
+					<mapping operand="set" target="oneWord" value="oneWord"></mapping>
 				</event-handler>
 			</aggregate>
 		</subdomain>
@@ -67,10 +76,12 @@
 			<field name="userId" type="String" pk="true"></field>
 			<field name="score" type="Int"></field>
 			<field name="comment" type="String"></field>
+			<field name="oneWord" type="String"></field>
 			<snapshot-handler id="EALML6" processor="item" sub-domain="Core" aggregate="Feedback" key-mapping="userId">
 				<mapping target="userId" value="userId" operand="set"></mapping>
 				<mapping target="score" value="score" operand="set"></mapping>
 				<mapping target="comment" value="comment" operand="set"></mapping>
+				<mapping operand="set" target="oneWord" value="oneWord"></mapping>
 			</snapshot-handler>
 			<query graphql-namespace="Feedback" field-name="get" type="get" authorization="anonymous" use-canonical-search="false"></query>
 			<query graphql-namespace="Feedback" field-name="filter" type="filter" authorization="anonymous" use-canonical-search="false"></query>
@@ -94,12 +105,14 @@
 				<input name="userId" type="String" value="myId"></input>
 				<input name="score" type="Int" value="5"></input>
 				<input name="comment" type="String" value="Hello World!"></input>
+				<input name="oneWord" type="String" value="Awesome"></input>
 				<expected-trace command="Core.Feedback.Create" status="success"></expected-trace>
 			</activity>
 			<activity path="Feedback.get" type="query" view="Feedback" description="Check if the feedback view item is created" id="hOeJOZ">
 				<input name="key" type="String" value="myId"></input>
 				<expect-value name="score" type="Int" value="5"></expect-value>
 				<expect-value name="comment" type="String" value="Hello World!"></expect-value>
+				<expect-value name="oneWord" type="String" value="Awesome"></expect-value>
 			</activity>
 		</scenario>
 	</functional-scenarios>
