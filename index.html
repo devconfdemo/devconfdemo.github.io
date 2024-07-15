@@ -20,11 +20,50 @@
         <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
         <script src="https://cdn.tailwindcss.com"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script src="https://d3js.org/d3.v4.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script>
+        <script src="/js/feedback-app.js"></script>
         <!-- header end -->
 
     </head>
-    <body x-data x-import="">
+    <body x-data="{data: []}">
 
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://devconfdemo.github.io/form" />
+    <draftsman-query alias="Feedbackfilter" x-include="/prepared-statements/views/Feedback/filter.txt" >
+    </draftsman-query>
+
+    <draftsman-notification message="updated" type="Feedback"
+                            @notification="Draftsman.reload_data();">
+    </draftsman-notification>
+
+    <div class="data-element" @refresh="data = $store.Feedbackfilter.filter.resultset"></div>
+
+    <div class="card bg-base-100 w-90 shadow-xl m-5">
+        <div class="card-body">
+            <h2 class="card-title">From sketch to production in 45 minutes.</h2>
+            <p>
+            <div class="grid grid-cols-2 gap-4">
+
+                <div>
+                    <div id="score_chart"
+                         x-effect="draw_line_graph(data)"
+                         class="w-100"></div>
+                </div>
+
+                <div x-effect="draw_word_cloud(data)">
+                    <div id="word_cloud"
+                         class="w-100"></div>
+                </div>
+                <div>
+                    
+                </div>
+                <div>
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://devconfdemo.github.io/form" />
+                </div>
+            </div>
+            </p>
+        </div>
+    </div>
+
     </body>
 </html>

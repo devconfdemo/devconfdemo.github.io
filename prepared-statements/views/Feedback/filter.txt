@@ -2,11 +2,11 @@
 query FilterFeedback {
   Feedback {
     filter {
-       resultset { 
-        key
+       resultset {
         userId
         score
         comment
+        oneWord
       }
     }
   }
