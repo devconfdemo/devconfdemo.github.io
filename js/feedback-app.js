@@ -66,7 +66,7 @@ function draw_word_cloud(data){
     });
 
     Object.keys(words).forEach(x => {
-        myWords.push({word: x, size: Math.ceil(words[x] / data.length * 100)});
+        myWords.push({word: x, size: Math.ceil(words[x] / data.length * 200)});
     });
 
     if (myWords.length == 1){
@@ -103,4 +103,19 @@ function draw_word_cloud(data){
             })
             .text(function(d) { return d.text; });
     }
+}
+
+
+var keys = [];
+function prepare_comments(data,comments){
+    console.log(keys);
+    data.forEach(x => {
+        let key = x.screenName + x.comment;
+        if (!(key in keys)){
+            comments.push(x);
+            keys.push(key);
+        }
+    });
+    console.log(comments);
+    return comments;
 }

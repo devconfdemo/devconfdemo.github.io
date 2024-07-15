@@ -54,8 +54,10 @@
                     <div id="word_cloud"
                          class="w-100"></div>
                 </div>
-                <div>
-                    
+                <div x-data="{comments: [],comment: {}}"
+                     x-init="setInterval(function(){comment = comments.shift()},5000)"
+                     x-effect="comments = prepare_comments(data,comments)">
+                    <pre x-text="JSON.stringify(comment,null,2)"></pre>
                 </div>
                 <div>
                     <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://devconfdemo.github.io/form" />
