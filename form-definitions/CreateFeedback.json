@@ -20,16 +20,24 @@
     "default": ""
   },
   {
-    "name": "comment",
-    "title": "Comment",
+    "name": "oneWord",
+    "title": "Oneword",
     "type": "String",
     "pattern": "",
     "placeholder": "",
     "default": ""
   },
   {
-    "name": "oneWord",
-    "title": "Oneword",
+    "name": "screenName",
+    "title": "Screenname",
+    "type": "String",
+    "pattern": "",
+    "placeholder": "",
+    "default": ""
+  },
+  {
+    "name": "comment",
+    "title": "Comment",
     "type": "String",
     "pattern": "",
     "placeholder": "",

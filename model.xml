@@ -6,14 +6,16 @@
 		<event graphql-namespace="Feedback" graphql-name="create" name="CreateFeedbackRequested" type="ActorEvent">
 			<field name="userId" type="String"></field>
 			<field name="score" type="Int"></field>
-			<field name="comment" type="String"></field>
 			<field name="oneWord" type="String"></field>
+			<field name="screenName" type="String"></field>
+			<field name="comment" type="String"></field>
 		</event>
 		<event name="FeedbackCreated" source="Core.Feedback" type="DomainEvent">
 			<field name="userId" type="String"></field>
 			<field name="score" type="Int"></field>
-			<field name="comment" type="String"></field>
 			<field name="oneWord" type="String"></field>
+			<field name="screenName" type="String"></field>
+			<field name="comment" type="String"></field>
 		</event>
 		<event name="FileUploaded" type="DomainEvent" source="appsync">
 			<field name="bucket" type="String"></field>
@@ -29,44 +31,51 @@
 				<field name="score" type="Int"></field>
 				<field name="comment" type="String"></field>
 				<field name="oneWord" type="String"></field>
+				<field name="screenName" type="String"></field>
 				<command name="Create">
 					<trigger source="CreateFeedbackRequested" key-field="userId">
 						<mapping target="userId" value="userId"></mapping>
 						<mapping target="score" value="score"></mapping>
 						<mapping target="comment" value="comment"></mapping>
 						<mapping target="oneWord" value="oneWord"></mapping>
+						<mapping target="screenName" value="screenName"></mapping>
 					</trigger>
 					<test-case name="HappyFlow" trigger-event="CreateFeedbackRequested" expected-processing-status="success">
 						<input name="userId" type="String" value="myId"></input>
 						<input name="score" type="Int" value="5"></input>
+						<input name="oneWord" type="String" value="Top"></input>
+						<input name="screenName" type="String" value="j.doe"></input>
 						<input name="comment" type="String" value="Hello World!"></input>
-						<input name="oneWord" type="String" value="Awesome"></input>
-						<expected domain-event="FeedbackCreated" id="Lj0QPu">
+						<expected domain-event="FeedbackCreated" id="gBcsws">
 							<field name="userId" type="String" value="myId"></field>
 							<field name="score" type="Int" value="5"></field>
+							<field name="oneWord" type="String" value="Top"></field>
+							<field name="screenName" type="String" value="j.doe"></field>
 							<field name="comment" type="String" value="Hello World!"></field>
-							<field name="oneWord" type="String" value="Awesome"></field>
 						</expected>
 						<expected-state pk="myId">{
   "userId": "myId",
+  "score": 5,
   "comment": "Hello World!",
-  "oneWord": "Awesome",
-  "version": 1,
-  "score": 5
+  "oneWord": "Top",
+  "screenName": "j.doe",
+  "version": 1
 }</expected-state>
 					</test-case>
 					<processor type="emit-event" ref="FeedbackCreated" id="Jf1o5o">
 						<mapping target="userId" value="#flow.userId"></mapping>
 						<mapping target="score" value="#flow.score"></mapping>
-						<mapping target="comment" value="#flow.comment"></mapping>
 						<mapping target="oneWord" value="#flow.oneWord"></mapping>
+						<mapping target="screenName" value="#flow.screenName"></mapping>
+						<mapping target="comment" value="#flow.comment"></mapping>
 					</processor>
 				</command>
 				<event-handler on="FeedbackCreated">
-					<mapping target="userId" value="userId" operand="set"></mapping>
-					<mapping target="score" value="score" operand="set"></mapping>
-					<mapping target="comment" value="comment" operand="set"></mapping>
+					<mapping operand="set" target="userId" value="userId"></mapping>
+					<mapping operand="set" target="score" value="score"></mapping>
+					<mapping operand="set" target="comment" value="comment"></mapping>
 					<mapping operand="set" target="oneWord" value="oneWord"></mapping>
+					<mapping operand="set" target="screenName" value="screenName"></mapping>
 				</event-handler>
 			</aggregate>
 		</subdomain>
@@ -77,11 +86,13 @@
 			<field name="score" type="Int"></field>
 			<field name="comment" type="String"></field>
 			<field name="oneWord" type="String"></field>
+			<field name="screenName" type="String"></field>
 			<snapshot-handler id="EALML6" processor="item" sub-domain="Core" aggregate="Feedback" key-mapping="userId">
 				<mapping target="userId" value="userId" operand="set"></mapping>
 				<mapping target="score" value="score" operand="set"></mapping>
 				<mapping target="comment" value="comment" operand="set"></mapping>
 				<mapping operand="set" target="oneWord" value="oneWord"></mapping>
+				<mapping operand="set" target="screenName" value="screenName"></mapping>
 			</snapshot-handler>
 			<query graphql-namespace="Feedback" field-name="get" type="get" authorization="anonymous" use-canonical-search="false"></query>
 			<query graphql-namespace="Feedback" field-name="filter" type="filter" authorization="anonymous" use-canonical-search="false"></query>
@@ -104,8 +115,9 @@
 			<activity path="Feedback.create" type="mutation" description="Create feedback instance" id="nx1ELg">
 				<input name="userId" type="String" value="myId"></input>
 				<input name="score" type="Int" value="5"></input>
-				<input name="comment" type="String" value="Hello World!"></input>
 				<input name="oneWord" type="String" value="Awesome"></input>
+				<input name="screenName" type="String" value="j.doe"></input>
+				<input name="comment" type="String" value="Hello World!"></input>
 				<expected-trace command="Core.Feedback.Create" status="success"></expected-trace>
 			</activity>
 			<activity path="Feedback.get" type="query" view="Feedback" description="Check if the feedback view item is created" id="hOeJOZ">
@@ -113,6 +125,7 @@
 				<expect-value name="score" type="Int" value="5"></expect-value>
 				<expect-value name="comment" type="String" value="Hello World!"></expect-value>
 				<expect-value name="oneWord" type="String" value="Awesome"></expect-value>
+				<expect-value name="screenName" type="String" value="j.doe"></expect-value>
 			</activity>
 		</scenario>
 	</functional-scenarios>
