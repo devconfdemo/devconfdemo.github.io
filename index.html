@@ -54,10 +54,17 @@
                     <div id="word_cloud"
                          class="w-100"></div>
                 </div>
-                <div x-data="{comments: [],comment: {}}"
-                     x-init="setInterval(function(){comment = comments.shift()},5000)"
+                <div x-data="{comments: [],comment: null}"
+                     x-init="setInterval(async function(){comment = null;await sleep(500);comment = comments.shift()},5000)"
                      x-effect="comments = prepare_comments(data,comments)">
-                    <pre x-text="JSON.stringify(comment,null,2)"></pre>
+                    <div x-show="comment" x-cloak x-transition>
+                        <div class="card bg-primary text-primary-content w-96">
+                            <div class="card-body">
+                                <h2 class="card-title" x-text="comment.screenName"></h2>
+                                <p x-text="comment.comment"></p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://devconfdemo.github.io/form" />

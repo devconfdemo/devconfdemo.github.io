@@ -106,16 +106,22 @@ function draw_word_cloud(data){
 }
 
 
+function sleep(ms) {
+    console.trace(`Sleep ${ms} milliseconds`);
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 var keys = [];
 function prepare_comments(data,comments){
-    console.log(keys);
     data.forEach(x => {
+        if (!x.screenName || !x.comment){
+            return;
+        }
         let key = x.screenName + x.comment;
-        if (!(key in keys)){
+        if (!keys.includes(key)){
             comments.push(x);
             keys.push(key);
         }
     });
-    console.log(comments);
     return comments;
 }
