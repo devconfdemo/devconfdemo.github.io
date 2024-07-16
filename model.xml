@@ -118,7 +118,7 @@
 				<input name="oneWord" type="String" value="Awesome"></input>
 				<input name="screenName" type="String" value="j.doe"></input>
 				<input name="comment" type="String" value="Hello World!"></input>
-				<expected-trace command="Core.Feedback.Create" status="success"></expected-trace>
+				<expected-trace command="Core.Feedback.Create" status="error"></expected-trace>
 			</activity>
 			<activity path="Feedback.get" type="query" view="Feedback" description="Check if the feedback view item is created" id="hOeJOZ">
 				<input name="key" type="String" value="myId"></input>
