@@ -40,7 +40,7 @@
                      @trace="location.href = '/thanks'">
     </draftsman-trace>
 
-    <div x-data="{command: {userId: $persist(make_id(37)), score: 3, comment: ''}}"
+    <div x-data="{command: $persist({userId: make_id(37), score: 3, comment: '', screenName: ''})}"
          class="card bg-base-100 w-90 shadow-xl m-5">
         <div class="card-body">
             <h2 class="card-title">Wat vond je van de demo?</h2>
