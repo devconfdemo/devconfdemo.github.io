@@ -40,28 +40,6 @@
 						<mapping target="oneWord" value="oneWord"></mapping>
 						<mapping target="screenName" value="screenName"></mapping>
 					</trigger>
-					<test-case name="HappyFlow" trigger-event="CreateFeedbackRequested" expected-processing-status="success">
-						<input name="userId" type="String" value="myId"></input>
-						<input name="score" type="Int" value="5"></input>
-						<input name="oneWord" type="String" value="Top"></input>
-						<input name="screenName" type="String" value="j.doe"></input>
-						<input name="comment" type="String" value="Hello World!"></input>
-						<expected domain-event="FeedbackCreated" id="gBcsws">
-							<field name="userId" type="String" value="myId"></field>
-							<field name="score" type="Int" value="5"></field>
-							<field name="oneWord" type="String" value="Top"></field>
-							<field name="screenName" type="String" value="j.doe"></field>
-							<field name="comment" type="String" value="Hello World!"></field>
-						</expected>
-						<expected-state pk="myId">{
-  "userId": "myId",
-  "score": 5,
-  "comment": "Hello World!",
-  "oneWord": "Top",
-  "screenName": "j.doe",
-  "version": 1
-}</expected-state>
-					</test-case>
 					<processor type="emit-event" ref="FeedbackCreated" id="Jf1o5o">
 						<mapping target="userId" value="#flow.userId"></mapping>
 						<mapping target="score" value="#flow.score"></mapping>
@@ -69,6 +47,28 @@
 						<mapping target="screenName" value="#flow.screenName"></mapping>
 						<mapping target="comment" value="#flow.comment"></mapping>
 					</processor>
+					<test-case name="HappyFlow" trigger-event="CreateFeedbackRequested" expected-processing-status="success">
+						<input name="userId" type="String" value="myId"></input>
+						<input name="score" type="Int" value="5"></input>
+						<input name="oneWord" type="String" value="Awesome"></input>
+						<input name="screenName" type="String" value="j.doe"></input>
+						<input name="comment" type="String" value="Hello World!"></input>
+						<expected domain-event="FeedbackCreated" id="xx9OrK">
+							<field name="userId" type="String" value="myId"></field>
+							<field name="score" type="Int" value="5"></field>
+							<field name="oneWord" type="String" value="Awesome"></field>
+							<field name="screenName" type="String" value="j.doe"></field>
+							<field name="comment" type="String" value="Hello World!"></field>
+						</expected>
+						<expected-state pk="myId">{
+  "userId": "myId",
+  "score": 5,
+  "comment": "Hello World!",
+  "oneWord": "Awesome",
+  "screenName": "j.doe",
+  "version": 1
+}</expected-state>
+					</test-case>
 				</command>
 				<event-handler on="FeedbackCreated">
 					<mapping operand="set" target="userId" value="userId"></mapping>
