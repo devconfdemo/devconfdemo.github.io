@@ -65,12 +65,25 @@ function draw_word_cloud(data){
         }
     });
 
-    Object.keys(words).forEach(x => {
-        myWords.push({word: x, size: Math.ceil(words[x] / data.length * 200)});
+    let items = Object.keys(words).map(function(key) {
+      return [key, words[key]];
+    });
+    items.sort(function(first, second) {
+      return second[1] - first[1];
     });
 
+    let size = 110;
+    let prev = 1000;
+    items.forEach(x => {
+        if (x[1] < prev && size != 20){
+            size -= 10;
+            prev = x[1];
+        }
+        myWords.push({word: x[0], size: size});
+    })
+
     if (myWords.length == 1){
-        myWords.push({word: '', size: 1});
+        myWords.push({word: '', size: 10});
     }
     console.log(myWords);
     // Constructs a new cloud layout instance. It run an algorithm to find the position of words that suits your requirements
