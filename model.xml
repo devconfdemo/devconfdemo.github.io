@@ -93,6 +93,7 @@
 				<mapping target="comment" value="comment" operand="set"></mapping>
 				<mapping operand="set" target="oneWord" value="oneWord"></mapping>
 				<mapping operand="set" target="screenName" value="screenName"></mapping>
+				<delete id="YfiAe6" condition="#snapshot.isDeleted != ''"></delete>
 			</snapshot-handler>
 			<query graphql-namespace="Feedback" field-name="get" type="get" authorization="anonymous" use-canonical-search="false"></query>
 			<query graphql-namespace="Feedback" field-name="filter" type="filter" authorization="anonymous" use-canonical-search="false"></query>
