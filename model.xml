@@ -33,7 +33,7 @@
 				<field name="oneWord" type="String"></field>
 				<field name="screenName" type="String"></field>
 				<command name="Create">
-					<trigger source="CreateFeedbackRequested" key-field="userId">
+					<trigger source="CreateFeedbackRequested" key-field="userId" idempotency-key="">
 						<mapping target="userId" value="userId"></mapping>
 						<mapping target="score" value="score"></mapping>
 						<mapping target="comment" value="comment"></mapping>
@@ -103,12 +103,12 @@
 	</projections>
 	<notifiers>
 		<notifier name="SetupEnvironment">
-			<trigger source="@afterDeployment">
+			<trigger source="@rate(1 day)">
 				<mapping target="dummy" value="#''"></mapping>
 			</trigger>
 			<activity type="iam-create-systemuser" fail-silent="true" id="vMB9LZ"></activity>
-			<activity id="vkYuPh" type="create-iam-group" group-name="#'expresion'"></activity>
-			<activity id="wjJU3t" group-name="#'administrator'" type="add-user-to-iam-group" username="#'expresion'"></activity>
+			<activity id="vkYuPh" fail-silent="true" type="create-iam-group" group-name="#'administrator'"></activity>
+			<activity id="wjJU3t" fail-silent="true" group-name="#'administrator'" type="add-user-to-iam-group" username="#'system-user'"></activity>
 		</notifier>
 	</notifiers>
 	<functional-scenarios clean-db="true" clean-iam="true" minimum-event-coverage="80" minimum-view-coverage="80">
