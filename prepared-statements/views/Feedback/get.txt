@@ -1,0 +1,13 @@
+# This file is NOT managed by Tracepaper, and can be customized.
+query GetFeedback($key: ID = "") {
+  Feedback {
+    get(key: $key) {
+      key
+      userId
+      score
+      comment
+      oneWord
+      screenName
+    }
+  }
+}

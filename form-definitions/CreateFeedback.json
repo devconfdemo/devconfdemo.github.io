@@ -1,0 +1,46 @@
+[
+  {
+    "type": "meta",
+    "message": "This file is managed by Tracepaper"
+  },
+  {
+    "name": "userId",
+    "title": "Userid",
+    "type": "String",
+    "pattern": "",
+    "placeholder": "",
+    "default": ""
+  },
+  {
+    "name": "score",
+    "title": "Score",
+    "type": "Int",
+    "pattern": "",
+    "placeholder": "",
+    "default": ""
+  },
+  {
+    "name": "oneWord",
+    "title": "Oneword",
+    "type": "String",
+    "pattern": "",
+    "placeholder": "",
+    "default": ""
+  },
+  {
+    "name": "screenName",
+    "title": "Screenname",
+    "type": "String",
+    "pattern": "",
+    "placeholder": "",
+    "default": ""
+  },
+  {
+    "name": "comment",
+    "title": "Comment",
+    "type": "String",
+    "pattern": "",
+    "placeholder": "",
+    "default": ""
+  }
+]
