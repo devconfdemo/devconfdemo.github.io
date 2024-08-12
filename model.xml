@@ -48,20 +48,20 @@
 						<mapping target="comment" value="#flow.comment"></mapping>
 					</processor>
 					<test-case name="HappyFlow" trigger-event="CreateFeedbackRequested" expected-processing-status="success">
-						<input name="userId" type="String" value="myId"></input>
+						<input name="userId" type="String" value="myid"></input>
 						<input name="score" type="Int" value="5"></input>
 						<input name="oneWord" type="String" value="Awesome"></input>
 						<input name="screenName" type="String" value="j.doe"></input>
 						<input name="comment" type="String" value="Hello World!"></input>
-						<expected domain-event="FeedbackCreated" id="xx9OrK">
-							<field name="userId" type="String" value="myId"></field>
+						<expected domain-event="FeedbackCreated" id="PGy0jb">
+							<field name="userId" type="String" value="myid"></field>
 							<field name="score" type="Int" value="5"></field>
 							<field name="oneWord" type="String" value="Awesome"></field>
 							<field name="screenName" type="String" value="j.doe"></field>
 							<field name="comment" type="String" value="Hello World!"></field>
 						</expected>
-						<expected-state pk="myId">{
-  "userId": "myId",
+						<expected-state pk="myid">{
+  "userId": "myid",
   "score": 5,
   "comment": "Hello World!",
   "oneWord": "Awesome",
