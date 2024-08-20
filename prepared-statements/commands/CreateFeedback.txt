@@ -1,8 +1,0 @@
-# This file is managed by Tracepaper
-mutation Create($userId: String = "", $score: Int = 0, $oneWord: String = "", $screenName: String = "", $comment: String = "") {
-  Feedback{
-    create(input: {userId: $userId,score: $score,oneWord: $oneWord,screenName: $screenName,comment: $comment}) {
-       correlationId
-    }
-  }
-}
