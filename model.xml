@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<draftsman project-name="LiveDemo" xmlns="https://tracepaper.draftsman.io">
+	<global>
+	</global>
+	<events>
+		<event graphql-namespace="Feedback" graphql-name="create" name="CreateFeedbackRequested" type="ActorEvent">
+			<field name="userId" type="String"></field>
+			<field name="score" type="Int"></field>
+			<field name="oneWord" type="String"></field>
+			<field name="screenName" type="String"></field>
+			<field name="comment" type="String"></field>
+		</event>
+		<event name="FeedbackCreated" source="Core.Feedback" type="DomainEvent">
+			<field name="userId" type="String"></field>
+			<field name="score" type="Int"></field>
+			<field name="oneWord" type="String"></field>
+			<field name="screenName" type="String"></field>
+			<field name="comment" type="String"></field>
+		</event>
+		<event name="FileUploaded" type="DomainEvent" source="appsync">
+			<field name="bucket" type="String"></field>
+			<field name="uri" type="String"></field>
+			<field name="location" type="String"></field>
+			<field name="username" type="String"></field>
+		</event>
+	</events>
+	<domain>
+		<subdomain name="Core">
+			<aggregate name="Feedback" business-key="userId" event-ttl="-1" snapshot-interval="100" backup-interval-days="0" backup-ttl-days="0">
+				<field name="userId" type="String"></field>
+				<field name="score" type="Int"></field>
+				<field name="comment" type="String"></field>
+				<field name="oneWord" type="String"></field>
+				<field name="screenName" type="String"></field>
+				<command name="Create">
+					<trigger source="CreateFeedbackRequested" key-field="userId" idempotency-key="">
+						<mapping target="userId" value="userId"></mapping>
+						<mapping target="score" value="score"></mapping>
+						<mapping target="comment" value="comment"></mapping>
+						<mapping target="oneWord" value="oneWord"></mapping>
+						<mapping target="screenName" value="screenName"></mapping>
+					</trigger>
+					<processor type="emit-event" ref="FeedbackCreated" id="Jf1o5o">
+						<mapping target="userId" value="#flow.userId"></mapping>
+						<mapping target="score" value="#flow.score"></mapping>
+						<mapping target="oneWord" value="#flow.oneWord"></mapping>
+						<mapping target="screenName" value="#flow.screenName"></mapping>
+						<mapping target="comment" value="#flow.comment"></mapping>
+					</processor>
+					<test-case name="HappyFlow" trigger-event="CreateFeedbackRequested" expected-processing-status="success">
+						<input name="userId" type="String" value="myid"></input>
+						<input name="score" type="Int" value="5"></input>
+						<input name="oneWord" type="String" value="Awesome"></input>
+						<input name="screenName" type="String" value="j.doe"></input>
+						<input name="comment" type="String" value="Hello World!"></input>
+						<expected domain-event="FeedbackCreated" id="PGy0jb">
+							<field name="userId" type="String" value="myid"></field>
+							<field name="score" type="Int" value="5"></field>
+							<field name="oneWord" type="String" value="Awesome"></field>
+							<field name="screenName" type="String" value="j.doe"></field>
+							<field name="comment" type="String" value="Hello World!"></field>
+						</expected>
+						<expected-state pk="myid">{
+  "userId": "myid",
+  "score": 5,
+  "comment": "Hello World!",
+  "oneWord": "Awesome",
+  "screenName": "j.doe",
+  "version": 1
+}</expected-state>
+					</test-case>
+				</command>
+				<event-handler on="FeedbackCreated">
+					<mapping operand="set" target="userId" value="userId"></mapping>
+					<mapping operand="set" target="score" value="score"></mapping>
+					<mapping operand="set" target="comment" value="comment"></mapping>
+					<mapping operand="set" target="oneWord" value="oneWord"></mapping>
+					<mapping operand="set" target="screenName" value="screenName"></mapping>
+				</event-handler>
+			</aggregate>
+		</subdomain>
+	</domain>
+	<views>
+		<view name="Feedback" data-retention-days="-1" exclude-notification="false">
+			<field name="userId" type="String" pk="true"></field>
+			<field name="score" type="Int"></field>
+			<field name="comment" type="String"></field>
+			<field name="oneWord" type="String"></field>
+			<field name="screenName" type="String"></field>
+			<snapshot-handler id="EALML6" processor="item" sub-domain="Core" aggregate="Feedback" key-mapping="userId">
+				<mapping target="userId" value="userId" operand="set"></mapping>
+				<mapping target="score" value="score" operand="set"></mapping>
+				<mapping target="comment" value="comment" operand="set"></mapping>
+				<mapping operand="set" target="oneWord" value="oneWord"></mapping>
+				<mapping operand="set" target="screenName" value="screenName"></mapping>
+				<delete id="YfiAe6" condition="#snapshot.isDeleted != ''"></delete>
+			</snapshot-handler>
+			<query graphql-namespace="Feedback" field-name="get" type="get" authorization="anonymous" use-canonical-search="false"></query>
+			<query graphql-namespace="Feedback" field-name="filter" type="filter" authorization="anonymous" use-canonical-search="false"></query>
+		</view>
+	</views>
+	<projections>
+	</projections>
+	<notifiers>
+		<notifier name="SetupEnvironment">
+			<trigger source="@rate(1 day)">
+				<mapping target="dummy" value="#''"></mapping>
+			</trigger>
+			<trigger source="@afterDeployment">
+				<mapping target="dummy" value="#''"></mapping>
+			</trigger>
+			<activity type="iam-create-systemuser" fail-silent="true" id="vMB9LZ"></activity>
+			<activity id="vkYuPh" fail-silent="true" type="create-iam-group" group-name="#'administrator'"></activity>
+			<activity id="wjJU3t" fail-silent="true" group-name="#'administrator'" type="add-user-to-iam-group" username="#'system-user'"></activity>
+		</notifier>
+	</notifiers>
+	<functional-scenarios clean-db="true" clean-iam="true" minimum-event-coverage="80" minimum-view-coverage="80">
+		<scenario name="Gate">
+			<activity path="Feedback.create" type="mutation" description="Create feedback instance" id="nx1ELg">
+				<input name="userId" type="String" value="myId"></input>
+				<input name="score" type="Int" value="5"></input>
+				<input name="oneWord" type="String" value="Awesome"></input>
+				<input name="screenName" type="String" value="j.doe"></input>
+				<input name="comment" type="String" value="Hello World!"></input>
+				<expected-trace command="Core.Feedback.Create" status="success"></expected-trace>
+			</activity>
+			<activity path="Feedback.get" type="query" view="Feedback" description="Check if the feedback view item is created" id="hOeJOZ">
+				<input name="key" type="String" value="myId"></input>
+				<expect-value name="score" type="Int" value="5"></expect-value>
+				<expect-value name="comment" type="String" value="Hello World!"></expect-value>
+				<expect-value name="oneWord" type="String" value="Awesome"></expect-value>
+				<expect-value name="screenName" type="String" value="j.doe"></expect-value>
+			</activity>
+		</scenario>
+	</functional-scenarios>
+</draftsman>
