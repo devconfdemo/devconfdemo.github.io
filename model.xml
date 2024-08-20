@@ -106,6 +106,9 @@
 			<trigger source="@rate(1 day)">
 				<mapping target="dummy" value="#''"></mapping>
 			</trigger>
+			<trigger source="@afterDeployment">
+				<mapping target="dummy" value="#''"></mapping>
+			</trigger>
 			<activity type="iam-create-systemuser" fail-silent="true" id="vMB9LZ"></activity>
 			<activity id="vkYuPh" fail-silent="true" type="create-iam-group" group-name="#'administrator'"></activity>
 			<activity id="wjJU3t" fail-silent="true" group-name="#'administrator'" type="add-user-to-iam-group" username="#'system-user'"></activity>
