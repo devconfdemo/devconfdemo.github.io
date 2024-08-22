@@ -3,7 +3,6 @@ query FilterFeedback {
   Feedback {
     filter {
        resultset { 
-        key
         userId
         score
         oneWord
