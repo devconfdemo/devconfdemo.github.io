@@ -1,111 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <meta name="description" content="Generated example"/>
-    <title>Getting Started</title>
-    <link rel="icon" type="image/x-icon" href="/assets/draftsman-logo.png"/>
-    <script src="/js/configuration.js"></script>
-    <script src="/js/configuration-staging.js"></script>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <title>Live Demo</title>
+        <script src="/js/configuration.js"></script>
+        <script src="/js/configuration-staging.js"></script>
 
-    <link rel="stylesheet" href="/css/draftsman.css"/>
-    <script src="/js/framework.js"></script>
-    <script src="/js/cache.js"></script>
-    <script src="https://unpkg.com/@vimesh/ui"></script>
-    <script src="/js/utils.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
-    <script src="https://unpkg.com/alpinejs" defer></script>
+        <link rel="stylesheet" href="/css/draftsman.css" />
+        <script src="/js/framework.js"></script>
+        <script src="/js/cache.js"></script>
+        <script src="https://unpkg.com/@vimesh/ui"></script>
+        <script src="/js/utils.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+        <script src="https://unpkg.com/alpinejs" defer></script>
 
-    <!--
-        This example uses bootstrap 5 as it's CSS framework
-        But feel free to use your own preference.
-    -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css"
-          integrity="sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" defer></script>
+        <!-- header -->
+        <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script src="https://d3js.org/d3.v4.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script>
+        <script src="/js/feedback-app.js"></script>
+        <!-- header end -->
 
-    <style>
-            code {
-              display: block;
-              white-space: pre-wrap
-            }
-            .scrollbar {
-                height:85vh;
-                overflow-y:auto;
-                padding: 1rem;
-            }
-            .scrollbar::-webkit-scrollbar {
-                width: 10px;
-            }
-            .scrollbar::-webkit-scrollbar-track {
-                border-radius: 8px;
-                background-color: #e7e7e7;
-                border: 1px solid #cacaca;
-            }
-            .scrollbar::-webkit-scrollbar-thumb {
-                border-radius: 8px;
-                background-color: #0d6efd;
-            }
-            .scrollbar-left {
-                direction: rtl;
-            }
-            .scroll-inside {
-                direction: ltr;
-            }
+    </head>
+    <body x-data="{data: []}">
 
-    </style>
-</head>
-<body class="d-flex flex-column h-100" x-data x-import="navbar">
-<main class="flex-shrink-0">
-    <ui-navbar></ui-navbar>
-    <br>
-    <div class="container" x-data="{toc: []}">
-        <!-- Render the ReadMe on this page -->
-        <script src=" https://unpkg.com/showdown/dist/showdown.min.js"></script>
-        <script>
-                    var converter = new showdown.Converter();
-        </script>
+    <draftsman-query alias="Feedbackfilter" x-include="/prepared-statements/views/Feedback/filter.txt" >
+    </draftsman-query>
 
-        <template x-component="toc-section">
-            <nav class="nav nav-pills flex-column">
-                <template x-for="item in $prop('toc')" :key="item.id">
-                    <div x-data="{spacer: ''}" x-init="spacer = $prop('spacer')">
-                        <a class="nav-link toc" :href="'#' + item.id" :id="'handle-' + item.id">
-                            <span x-html="spacer"></span>
-                            <span x-text="item.title"></span>
-                        </a>
-                        <template x-if="item.toc.length != 0">
-                            <ui-toc-section :toc="item.toc" :spacer="spacer + '&nbsp;&nbsp;&nbsp;'"></ui-toc-section>
-                        </template>
+    <draftsman-notification message="updated" type="Feedback"
+                            @notification="Draftsman.reload_data();">
+    </draftsman-notification>
+
+    <div class="data-element" @refresh="data = $store.Feedbackfilter.filter.resultset"></div>
+
+    <div class="card bg-base-100 w-90 shadow-xl m-5">
+        <div class="card-body">
+            <h2 class="card-title">From sketch to production in 45 minutes.</h2>
+            <p>
+            <div class="grid grid-cols-2 gap-4">
+
+                <div>
+                    <div id="score_chart"
+                         x-effect="draw_line_graph(data)"
+                         class="w-100"></div>
+                </div>
+
+                <div x-effect="draw_word_cloud(data)">
+                    <div id="word_cloud"
+                         class="w-100"></div>
+                </div>
+                <div x-data="{comments: [],comment: null}"
+                     x-init="setInterval(async function(){comment = null;await sleep(500);comment = comments.shift()},5000)"
+                     x-effect="comments = prepare_comments(data,comments)">
+                    <div x-show="comment" x-cloak x-transition>
+                        <div class="card bg-primary text-primary-content w-96">
+                            <div class="card-body">
+                                <h2 class="card-title" x-text="comment.screenName"></h2>
+                                <p x-text="comment.comment"></p>
+                            </div>
+                        </div>
                     </div>
-                </template>
-            </nav>
-        </template>
-
-        <div class="row">
-            <div class="col-4">
-                <div class="scrollbar scrollbar-left">
-                    <nav class="h-100 flex-column align-items-stretch pe-4 border-end scroll-inside">
-                        <ui-toc-section :toc="toc" :spacer="''"></ui-toc-section>
-                    </nav>
                 </div>
-
-            </div>
-
-            <div class="col-8">
-                <div x-ref="target" class="scrollbar" @scroll="update_toc_highlight($refs.target)">
+                <div>
+                    <img @click="
+                    let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=100,height=100,left=10,top=10`;
+                    window.open('/form','targetWindow',params);" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://devconfdemo.github.io/form" />
                 </div>
             </div>
-
+            </p>
         </div>
-
-        <div x-include="/docs.md" x-effect="setTimeout(function(){
-                    $refs.target.innerHTML = converter.makeHtml($el.innerHTML);
-                    toc = create_toc($refs.target);
-                },100);" style="display:none;"></div>
     </div>
-</main>
-</body>
+
+    </body>
 </html>
