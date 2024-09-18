@@ -1,0 +1,60 @@
+/* Strikethrough effect for the title */
+.strikethrough {
+    position: relative;
+    display: inline-block;
+}
+.strikethrough::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 4px; /* Thickness of the strikethrough */
+    background: red; /* Color of the strikethrough */
+    transform: rotate(-5deg); /* Slight angle for a hand-drawn look */
+}
+
+/* Text effect for the drawn look */
+.block-letters {
+    font-family: 'Special Elite', cursive;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-shadow:
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;  /* Creates a hatched effect by offsetting shadows */
+}
+
+/* Handwriting effect */
+.handwriting {
+    font-family: 'Caveat', cursive;
+}
+
+/* Override background colors for DaisyUI */
+:root {
+    --daisyui-bg: transparent !important;
+}
+ html {
+    background-color: transparent !important;
+}
+.card, .prose, .container, .box {
+    background-color: transparent !important;
+}
+
+/* Custom animation for slide-in from top with fade-in effect */
+@keyframes slideFadeIn {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Apply animation to h2 with a delay */
+.slide-fade-in {
+    animation: slideFadeIn 1.5s ease-in-out forwards;
+}

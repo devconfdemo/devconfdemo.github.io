@@ -1,0 +1,7 @@
+body {
+    background-color: white; /* Achtergrondkleur */
+    background-image:
+        linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px), /* Verticale lijnen */
+        linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px); /* Horizontale lijnen */
+    background-size: 20px 20px; /* Afstand tussen lijnen */
+}

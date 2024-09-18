@@ -6,7 +6,6 @@ document.addEventListener('alpine:init', async () => {
     },1);
 });
 
-
 function make_id(length) {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -125,7 +124,6 @@ function draw_word_cloud(data){
             .text(function(d) { return d.text; });
     }
 }
-
 
 function sleep(ms) {
     console.trace(`Sleep ${ms} milliseconds`);

@@ -1,0 +1,11 @@
+<iframe width="100%" height="950px"
+        id="ide"
+        style="background: transparent; opacity: 1;border: none;"
+        src="https://tracepaper.draftsman.io/"></iframe>
+<script>
+window.onload = function () {
+  window.addEventListener('message', function() {
+      document.getElementById("ide").contentWindow.postMessage({type: "open", file:"domain/Core/Feedback"},"*");
+    });
+}
+</script>

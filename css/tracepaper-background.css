@@ -1,0 +1,7 @@
+body {
+    background-image: url('/assets/blueprint-background2.png'); /* Zorg ervoor dat het pad naar je afbeelding correct is */
+    background-size: cover; /* Zorgt ervoor dat de afbeelding de hele achtergrond vult */
+    background-position: center; /* Plaatst de afbeelding gecentreerd */
+    background-repeat: no-repeat; /* Voorkomt dat de afbeelding zich herhaalt */
+    background-attachment: fixed; /* Zorgt ervoor dat de achtergrond vast blijft bij scrollen */
+}

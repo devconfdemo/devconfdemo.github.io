@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Load necessary libraries -->
+    <script src="https://unpkg.com/@vimesh/ui"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/alpinejs" defer></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.7/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/js/slide-base.js"></script>
+    <link href="/css/phone.css" rel="stylesheet" type="text/css"/>
+    <script src="/js/phone.js"></script>
+
+</head>
+<body
+      x-data
+      @keydown.right.window.debounce="nextSlide"
+      @keydown.left.window="previousSlide">
+
+<div class="grid grid-cols-3 gap-4">
+    <div class="col-span-2">
+        <div class="flex justify-center items-center h-screen">
+        <h2 class="text-xl font-bold">Kolom 1 (2/3 breedte)</h2>
+        <p>Inhoud van de eerste kolom.</p>
+        </div>
+    </div>
+
+    <div class="col-span-1">
+        <div class="flex justify-center items-center h-screen">
+            <div class="mockup-phone">
+                <div class="camera"></div> <!-- Camera at the top -->
+                <div class="display">
+                    <div class="artboard artboard-demo phone-1">
+                        <!-- Chat window -->
+                        <div id="chat-window" class="chat-window">
+                            <!-- Messages will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+/* Override DaisyUI and Tailwind's default background */
+:root {
+    --daisyui-bg: transparent !important;
+}
+
+body, html {
+    background-color: transparent !important;
+}
+
+/* If DaisyUI components set backgrounds, override those */
+.card, .prose, .container, .box {
+    background-color: transparent !important;
+}
+
+/* Chat bubble styling */
+.chat-bubble {
+  margin-bottom: 20px; /* Default margin between all messages */
+  max-width: 80%; /* Restrict width to 80% of the phone screen */
+  padding: 10px 15px; /* Padding inside the bubble */
+  word-wrap: break-word; /* Wrap long words */
+  word-break: break-word; /* Ensure long words break properly */
+  flex-shrink: 0; /* Prevent shrinking when more bubbles are added */
+}
+
+/* Different bubble colors */
+.user-bubble {
+  background-color: #dcf8c6; /* Light green for the user */
+  color: black;
+}
+.friend-bubble {
+  background-color: #ececec; /* Light grey for the friend */
+  color: black;
+}
+
+/* Adjust chat container for scrolling */
+.chat-window {
+  height: 100%;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Typing indicator styling */
+@keyframes blink {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+.typing-indicator {
+  display: inline-block;
+  border-radius: 9999px;
+  padding: 10px;
+  max-width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.typing-indicator span {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: #bbb;
+  border-radius: 50%;
+  margin: 0 3px;
+  animation: blink 1.4s infinite both;
+}
+.typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+.typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+/* Mockup artboard size */
+.artboard {
+  padding: 20px;
+  background-color: white;
+  height: 100%; /* Ensure the artboard fills the display */
+}
+
+
+[x-cloak], draftsman-query, draftsman-notification, draftsman-mutation {
+    display: none !important;
+}
