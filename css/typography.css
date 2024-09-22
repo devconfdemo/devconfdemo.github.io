@@ -54,7 +54,6 @@
     }
 }
 
-/* Apply animation to h2 with a delay */
 .slide-fade-in {
-    animation: slideFadeIn 1.5s ease-in-out forwards;
+    animation: slideFadeIn 3s ease-in-out forwards;
 }

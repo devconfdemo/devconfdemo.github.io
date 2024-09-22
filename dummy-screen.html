@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <title>Live Demo</title>
+    <script src="/js/configuration.js"></script>
+    <script src="/js/configuration-staging.js"></script>
+
+    <link rel="stylesheet" href="/css/draftsman.css" />
+    <script src="/js/framework.js"></script>
+    <script src="/js/cache.js"></script>
+    <script src="https://unpkg.com/@vimesh/ui"></script>
+    <script src="/js/utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/alpinejs" defer></script>
+
+    <!-- header -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/holtzy/D3-graph-gallery@master/LIB/d3.layout.cloud.js"></script>
+    <script src="/js/feedback-app.js"></script>
+    <!-- header end -->
+    <style>
+        html {
+            background-color: transparent !important;
+        }
+    </style>
+
+    <script>
+        var mockdata = [
+    {
+        "userId": "Aa73JdF7QlHd83KeN9Vkl",
+        "score": 5,
+        "oneWord": "Geweldig!",
+        "screenName": "Alex Tech",
+        "comment": "De demo liep erg soepel en werkte zoals verwacht."
+    },
+    {
+        "userId": "Ls5TgHk9XyLq12BnV3PcR",
+        "score": 4,
+        "oneWord": "Goed",
+        "screenName": "Sam Device",
+        "comment": "Prima demonstratie, enkele kleine glitches maar niets ernstigs."
+    },
+    {
+        "userId": "Nm8VhYp4AsDq56ZtO2EkJ",
+        "score": 3,
+        "oneWord": "Veelbelovend",
+        "screenName": "Chris Gadget",
+        "comment": "Het werkte goed, zeker een stap in de goede richting!"
+    },
+    {
+        "userId": "Xp1JbNd7UzFg89TmA6LpP",
+        "score": 5,
+        "oneWord": "Fantastisch!",
+        "screenName": "Taylor Device",
+        "comment": "Alles werkte perfect, zeer onder de indruk!"
+    },
+    {
+        "userId": "Jb9UcWd5KoVq43FnR5TcN",
+        "score": 4,
+        "oneWord": "Prima",
+        "screenName": "Jordan Machine",
+        "comment": "De demo was goed, werkte zoals verwacht."
+    },
+    {
+        "userId": "Mt4XcGh2ErFk21LmV7NpQ",
+        "score": 3,
+        "oneWord": "Goed begin",
+        "screenName": "Robin Tech",
+        "comment": "De demo werkte goed en er is duidelijk potentieel!"
+    },
+    {
+        "userId": "Bb2VfKl8QsJm78TpC4EkW",
+        "score": 5,
+        "oneWord": "Top!",
+        "screenName": "Jamie Gadget",
+        "comment": "Zeer tevreden over hoe alles verliep."
+    },
+    {
+        "userId": "Za3TfHg4VoQl57OpF8YlM",
+        "score": 4,
+        "oneWord": "Goed",
+        "screenName": "Casey Machine",
+        "comment": "Geen grote problemen, werkte zoals beloofd."
+    },
+    {
+        "userId": "Uk6YbFc1RxGm32LnV9HcJ",
+        "score": 3,
+        "oneWord": "Positief",
+        "screenName": "Morgan Device",
+        "comment": "Het was positief en het lijkt op een solide basis om verder te bouwen."
+    },
+    {
+        "userId": "Fn7WkOd3EpFr65TpC2GvL",
+        "score": 5,
+        "oneWord": "Uitstekend!",
+        "screenName": "Riley Tech",
+        "comment": "Werkt perfect, niets op aan te merken."
+    }
+];
+    </script>
+</head>
+<body x-data="{data: []}" x-init="setInterval(function(){if(mockdata.length != 0){data.push(mockdata.shift())}},1500)">
+
+<div class="card bg-base-100 w-90 shadow-xl m-5">
+    <div class="card-body">
+        <h2 class="card-title">From sketch to production in 45 minutes.</h2>
+        <p>
+        <div class="grid grid-cols-2 gap-4">
+
+            <div>
+                <div id="score_chart"
+                     x-effect="draw_line_graph(data)"
+                     class="w-100"></div>
+            </div>
+
+            <div x-effect="draw_word_cloud(data)">
+                <div id="word_cloud"
+                     class="w-100"></div>
+            </div>
+            <div x-data="{comments: [], comment: null}"
+                 x-init="setInterval(async function(){comment = null;await sleep(500);comment = comments.shift()},5000)"
+                 x-effect="comments = prepare_comments(data, comments)">
+                <div x-show="comment" x-cloak x-transition>
+                    <div class="card bg-primary text-primary-content w-96">
+                        <div class="card-body">
+                            <h2 class="card-title" x-text="comment.screenName"></h2>
+                            <p x-text="comment.comment"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <img @click="
+                    let params = `scrollbars=no,resizable=no,status=no,location=no,toolbar=no,menubar=no,width=100,height=100,left=10,top=10`;
+                    window.open('/nog-niet','targetWindow',params);" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://devconfdemo.github.io/nog-niet" />
+            </div>
+        </div>
+        </p>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,10 +1,24 @@
 const slideConfig = [
-    {id: 'slide-1'},
-    {id: 'slide-2', animations: 4},
-    {id: 'slide-3'},
-    {id: 'slide-4', animations: 1},
-    {id: 'slide-5'},
-    {id: 'slide-6'}
+    {id: '1-titel'},
+    {id: '2-proloog', animations: 4},
+    {id: '3-welkom'},
+    {id: '4-tijdlijn'},
+    {id: '5-appengine2'},
+    {id: '6-problem-statement'},
+    {id: '7-serverless-oplossing'},
+    {id: '8-serverless-probleem'},
+    {id: '9-ruis'},
+    {id: '10-IaC-controlflow'},
+    {id: '11-monolitisch-model'},
+    {id: '12-modeleren-data-flow'},
+    {id: '13-CQRS'},
+    {id: '14-transactie'},
+    {id: '15-model'},
+    {id: '16-track-and-trace'},
+    {id: '17-api'},
+    {id: '18-deployment'},
+    {id: '19-de-demo'},
+    {id: '20-het-ontwerp'}
 ]
 
 document.addEventListener('alpine:init', () => {

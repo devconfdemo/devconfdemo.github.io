@@ -1,5 +1,6 @@
 // Wait for the DOM to fully load
 window.onload = function () {
+
   const chatWindow = document.getElementById("chat-window");
 
   // Example messages array
@@ -55,6 +56,9 @@ window.onload = function () {
       typingBubble.classList.remove('typing-bubble');
       typingBubble.innerHTML = text; // Replace with the actual message
       scrollToBottom();
+      if (sender === "friend"){
+        playAlert("pop");
+      }
     }
   }
 
@@ -73,14 +77,14 @@ window.onload = function () {
       const { text, sender } = message;
       addTypingIndicator(sender); // Add the typing indicator bubble
 
-      // Wait 1.5 seconds to simulate typing, then replace it with the actual message
+      let wait = sender == 'friend' ? 1500 : 10;
       setTimeout(() => {
         replaceTypingWithMessage(text, sender); // Replace typing indicator with actual message
         index++;
         if (!isPaused) {
           setTimeout(showNextMessage, 2000); // Wait 2 seconds before the next message
         }
-      }, 1500); // Typing delay
+      }, wait); // Typing delay
     }
   }
 

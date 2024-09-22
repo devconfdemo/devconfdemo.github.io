@@ -92,7 +92,7 @@ function draw_word_cloud(data){
     if (myWords.length == 1){
         myWords.push({word: '', size: 10});
     }
-    console.log(myWords);
+
     // Constructs a new cloud layout instance. It run an algorithm to find the position of words that suits your requirements
     // Wordcloud features that are different from one word to the other must be here
     svg.selectAll("*").remove();
@@ -134,6 +134,7 @@ var keys = [];
 function prepare_comments(data,comments){
     data.forEach(x => {
         if (!x.screenName || !x.comment){
+            console.log("!!!!!!!!")
             return;
         }
         let key = x.screenName + x.comment;

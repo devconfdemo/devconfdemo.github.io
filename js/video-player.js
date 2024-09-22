@@ -41,6 +41,5 @@ window.onload = function () {
         start_playback();
         played = true;
       }
-
     });
 }

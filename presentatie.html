@@ -13,7 +13,7 @@
     <link href="/css/presentation-background.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
-<body x-data="presentatie" data-theme="nord">
+<body x-data="presentatie" data-theme="nord" style="overflow:hidden">
 
 <div
      id="presentatie-container"
@@ -92,7 +92,7 @@
             <template x-for="(slide, index) in slides" :key="slide.id">
                 <li x-show="currentIndex === index" x-cloak x-transition>
                     <b>Notes:</b>
-                    <p class="speaker-notes" x-include="'/slides/slide-' + (index + 1) + '-notes.md'"></p>
+                    <p class="speaker-notes" x-include="'/slides/' + slide.id + '.md'"></p>
                 </li>
             </template>
         </ul>

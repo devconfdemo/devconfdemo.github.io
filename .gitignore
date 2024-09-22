@@ -3,3 +3,7 @@
 .idea/*
 tmp/
 tmp/*
+myenv/
+myenv/*
+.env/
+.env/*

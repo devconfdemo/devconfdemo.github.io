@@ -27,11 +27,23 @@
 <!-- Centered and static text -->
 <article class="relative flex flex-col items-center text-center">
     <!-- Main text with block letter style and strikethrough -->
-    <h1 class="text-5xl font-bold block-letters">
-        <span>Waarom is het de vorige keer mislukt?</span>
+    <h1 class="text-4xl font-bold block-letters">
+        <span>Demo Mockup</span>
     </h1>
 
-    <img src="/assets/appengine2.transparent.png" class="slide-image mx-auto"/>
+    <iframe width="1600px" height="950px"
+            id="mockup"
+            style="background: transparent; opacity: 1;border: none;"
+            allowtransparency="true" class="bg-transparent"
+            src="/dummy-screen"></iframe>
+
+    <script>
+        window.onload = function () {
+          window.addEventListener('message', function() {
+                document.getElementById('mockup').contentWindow.location.reload();
+            });
+        }
+    </script>
 
 </article>
 </body>
