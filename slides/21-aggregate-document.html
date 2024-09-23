@@ -1,0 +1,23 @@
+<img height="800px" id="image" src="/assets/demo-1-agg-document.transparent.png" />
+<iframe width="100%" height="950px"
+        id="ide"
+        style="background: transparent; opacity: 1;border: none;"
+        hidden="true"
+        src=""></iframe>
+<script>
+    window.onload = function () {
+      let status = "init";
+      window.addEventListener('message', function(message) {
+          if (status == "init"){status = "ready"}
+          else if (status == "ready"){
+            let iframe = document.getElementById("ide");
+            iframe.src = "https://tracepaper.draftsman.io/";
+            document.getElementById("image").hidden = true;
+            iframe.hidden = false;
+            setTimeout(function(){
+                iframe.contentWindow.postMessage({type: "open", file:"domain/Core/Feedback"},"*");
+            },1000);
+          }
+        });
+    }
+</script>

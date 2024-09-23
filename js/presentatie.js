@@ -19,8 +19,8 @@ const slideConfig = [
     {id: '18-deployment'},
     {id: '19-de-demo'},
     {id: '20-het-ontwerp', animations: 1},
-//    {id: '21-aggregate-document', animations: 1},
-//    {id: '22-command', animations: 1},
+    {id: '21-aggregate-document', animations: 1, reset_animations: 1},
+    {id: '22-command', animations: 1, reset_animations: 1},
 //    {id: '23-event', animations: 1},
 //    {id: '24-trigger', animations: 1},
 //    {id: '25-flow', animations: 1},
@@ -62,6 +62,10 @@ document.addEventListener('alpine:init', () => {
             this.slides[this.currentIndex].animations += -1;
             this.trigger_slide_animation();
             return;
+          } else if (this.slides[this.currentIndex].reset_animations){
+            this.slides[this.currentIndex].animations = this.slides[this.currentIndex].reset_animations;
+            let iframe = document.getElementById('slide-content-' + this.currentIndex);
+            iframe.contentWindow.location.reload();
           }
           this.fastForward();
         },
