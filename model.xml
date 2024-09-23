@@ -63,7 +63,14 @@
 							<field name="comment" type="String" value="Hello World!"></field>
 						</expected>
 						<state>{}</state>
-						<expected-state pk="ID123">{"userId":"ID123","score":4,"oneWord":"Geweldig","screenName":"j.doe","comment":"Hello World!","version":1}</expected-state>
+						<expected-state pk="ID123">{
+  "userId": "ID123",
+  "score": 4,
+  "oneWord": "Geweldig",
+  "screenName": "j.doe",
+  "comment": "Hello World!",
+  "version": 1
+}</expected-state>
 					</test-case>
 					<test-case name="ScoreToLow" trigger-event="CreateFeedbackRequested" expected-processing-status="error">
 						<input name="userId" type="String" value="ID456"></input>
@@ -123,7 +130,7 @@
 		</notifier>
 	</notifiers>
 	<functional-scenarios clean-db="true" clean-iam="true" minimum-event-coverage="80" minimum-view-coverage="80">
-		<scenario name="Demo">
+		<scenario name="Demo" extends="">
 			<activity path="Feedback.create" type="mutation" description="Maak feedback item aan" id="lX2fgq">
 				<input name="userId" type="String" value="ID123"></input>
 				<input name="score" type="Int" value="4"></input>
