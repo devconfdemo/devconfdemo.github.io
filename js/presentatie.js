@@ -1,6 +1,6 @@
 const slideConfig = [
     {id: '1-titel'},
-    {id: '2-proloog', animations: 4},
+    {id: '2-proloog', animations: 5},
     {id: '3-welkom'},
     {id: '4-tijdlijn'},
     {id: '5-appengine2'},
@@ -88,6 +88,7 @@ document.addEventListener('alpine:init', () => {
             if (confirm("Presentatie resetten?")){
                 this.currentIndex = 0;
                 setTimeout(function(){
+                    localStorage.removeItem('_x_remainingTime');
                     location.reload();
                 },1000);
             }
@@ -116,3 +117,42 @@ document.addEventListener('alpine:init', () => {
         });
     },1000);
 });
+
+function timer() {
+    return {
+        // Persistent start time (45 minutes in milliseconds)
+        startTime: Alpine.$persist(45 * 60 * 1000),
+
+        // Timer variables
+        remainingTime: Alpine.$persist(45 * 60 * 1000),
+        intervalId: null,
+
+        // Timer start function
+        startTimer() {
+            this.intervalId = setInterval(() => {
+                if (this.remainingTime > -60 * 60 * 1000) { // Stop after -60 mins
+                    this.remainingTime -= 1000;
+                }
+            }, 1000);
+        },
+
+        // Format the time in mm:ss
+        get formattedTime() {
+            let minutes = Math.floor(Math.abs(this.remainingTime) / 1000 / 60);
+            let seconds = Math.floor((Math.abs(this.remainingTime) / 1000) % 60);
+
+            return `${this.remainingTime < 0 ? '-' : ''}${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        },
+
+        // Change text color based on time
+        get timeColor() {
+            if (this.remainingTime < 0) {
+                return 'red'; // Negative time = red
+            } else if (this.remainingTime <= 10 * 60 * 1000) {
+                return 'orange'; // Last 10 minutes = orange
+            } else {
+                return 'green'; // Default = green
+            }
+        }
+    };
+}

@@ -12,6 +12,17 @@
     <script src="/js/presentatie.js"></script>
     <link href="/css/presentation-background.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        .green {
+            color: green;
+        }
+        .orange {
+            color: orange;
+        }
+        .red {
+            color: red;
+        }
+    </style>
 </head>
 <body x-data="presentatie" data-theme="nord" style="overflow:hidden">
 
@@ -66,9 +77,10 @@
             </label>
         </button>
         <button @click="openNotes">
-            <div class="badge badge-outline">
-                <span x-text="getSlideIndicator"></span>
-            </div>
+            <span class="badge badge-outline" x-data="timer()" x-init="startTimer()">
+                <span x-text="getSlideIndicator"></span>&nbsp;-&nbsp;
+                <span :class="timeColor" x-text="formattedTime"></span>
+            </span>
         </button>
         <button :disabled="fastForwardEnabled" @click="fastForward">
             <i class="fa-solid fa-forward-fast"></i>
