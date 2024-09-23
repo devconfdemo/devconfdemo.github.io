@@ -18,7 +18,17 @@ const slideConfig = [
     {id: '17-api'},
     {id: '18-deployment'},
     {id: '19-de-demo'},
-    {id: '20-het-ontwerp'}
+    {id: '20-het-ontwerp'},
+    {id: '21-aggregate-document', animations: 1},
+    {id: '22-command', animations: 1},
+    {id: '23-event', animations: 1},
+    {id: '24-trigger', animations: 1},
+    {id: '25-flow', animations: 1},
+    {id: '26-view-model', animations: 1},
+    {id: '27-view-mapper', animations: 1},
+    {id: '28-view-queries', animations: 1},
+    {id: '29-scenario', animations: 1},
+    {id: '30-pipeline', animations: 1},
 ]
 
 document.addEventListener('alpine:init', () => {

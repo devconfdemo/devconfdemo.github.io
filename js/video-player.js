@@ -10,7 +10,7 @@ function start_playback(){
         video.msRequestFullScreen();
   },1000);
   setTimeout(function(){
-    video.playbackRate = 15;
+    video.playbackRate = 2;
   },2000);
 }
 
@@ -25,9 +25,9 @@ window.onload = function () {
       } else if (document.msExitFullscreen) { /* IE11 */
         document.msExitFullscreen();
       }
-      const video = document.getElementById('video');
-      video.currentTime = 0; // Zet de video terug naar het begin
-      video.load(); // Herlaad de video om de poster te tonen
+      //const video = document.getElementById('video');
+      //video.currentTime = 0; // Zet de video terug naar het begin
+      //video.load(); // Herlaad de video om de poster te tonen
   }
   video.onclick = start_playback;
   let trigger_animation = false;
