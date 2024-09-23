@@ -21,14 +21,14 @@ const slideConfig = [
     {id: '20-het-ontwerp', animations: 1},
     {id: '21-aggregate-document', animations: 1, reset_animations: 1},
     {id: '22-command', animations: 1, reset_animations: 1},
-//    {id: '23-event', animations: 1},
-//    {id: '24-trigger', animations: 1},
-//    {id: '25-flow', animations: 1},
-//    {id: '26-view-model', animations: 1},
-//    {id: '27-view-mapper', animations: 1},
-//    {id: '28-view-queries', animations: 1},
-//    {id: '29-scenario', animations: 1},
-//    {id: '30-pipeline', animations: 1},
+    {id: '23-event', animations: 1, reset_animations: 1},
+    {id: '24-trigger', animations: 1,reset_animations: 1},
+    {id: '25-flow', animations: 1, reset_animations: 1},
+    {id: '26-view-model', animations: 1, reset_animations: 1},
+    {id: '27-view-mapper', animations: 1, reset_animations: 1},
+    {id: '28-view-queries', animations: 1,reset_animations: 1},
+    {id: '29-scenario', animations: 1, reset_animations: 1},
+    {id: '30-pipeline', animations: 1, reset_animations: 1},
 ]
 
 document.addEventListener('alpine:init', () => {
@@ -70,6 +70,11 @@ document.addEventListener('alpine:init', () => {
           this.fastForward();
         },
         previousSlide() {
+            if (this.slides[this.currentIndex].reset_animations){
+            this.slides[this.currentIndex].animations = this.slides[this.currentIndex].reset_animations;
+            let iframe = document.getElementById('slide-content-' + this.currentIndex);
+            iframe.contentWindow.location.reload();
+          }
           this.direction = 'left';
           this.currentIndex = (this.currentIndex - 1 + this.slides.length) % this.slides.length;
           this.trigger_slide_animation();

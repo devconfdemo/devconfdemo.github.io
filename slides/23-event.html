@@ -1,8 +1,8 @@
 <script>
     window.onload = function () {
       let status = "init";
-      let file = "commands/Feedback/CreateFeedbackRequested.xml";
-      function load_frame(){
+      let file = "domain/Core/Feedback/events/FeedbackCreated.xml";
+      window.load_frame = function(){
         let iframe = document.getElementById("ide");
         iframe.src = "https://tracepaper.draftsman.io/";
         document.getElementById("image").hidden = true;
@@ -19,7 +19,7 @@
         });
     }
 </script>
-<img onclick="load_frame" height="800px" id="image" src="/assets/demo-2-command.transparent.png" />
+<img onclick="load_frame()" height="800px" id="image" src="/assets/demo-3-event.transparent.png" />
 <iframe width="100%" height="950px"
         id="ide"
         style="background: transparent; opacity: 1;border: none;"
