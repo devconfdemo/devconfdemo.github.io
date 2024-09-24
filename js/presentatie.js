@@ -1,12 +1,12 @@
 const slideConfig = [
-    {id: '1-titel'},
-    {id: '2-proloog', animations: 5},
-    {id: '3-welkom'},
-    {id: '4-tijdlijn'},
-    {id: '5-appengine2'},
-    {id: '6-problem-statement'},
-    {id: '7-serverless-oplossing'},
-    {id: '8-serverless-probleem'},
+    {id: '1-titel',title: 'Titel Card'},
+    {id: '2-proloog', animations: 5, title: 'Proloog'},
+    {id: '3-welkom', title: 'Welkom'},
+    {id: '4-tijdlijn', title: 'Tijdlijn', image: '/assets/tijdlijn.transparent.png'},
+    {id: '5-appengine2', title: 'Appengine 2', image: '/assets/appengine2.transparent.png'},
+    {id: '6-problem-statement', title: 'Problem statement', image: '/assets/wat-wil-ik.transparent.png'},
+    {id: '7-serverless-oplossing', title: 'Serverless', image: '/assets/serverless-oplossing.transparent.png'},
+    {id: '8-serverless-probleem', title: 'Serverless "Probleem"', image: '/assets/serverless-probleem.transparent.png'},
     {id: '9-ruis'},
     {id: '10-IaC-controlflow'},
     {id: '11-monolitisch-model'},
@@ -81,6 +81,11 @@ document.addEventListener('alpine:init', () => {
           this.direction = 'left';
           this.currentIndex = (this.currentIndex - 1 + this.slides.length) % this.slides.length;
           this.trigger_slide_animation();
+        },
+        go_to_slide(index){
+            this.currentIndex = index;
+            this.speakerNotes = false;
+            this.trigger_slide_animation();
         },
         fastForward(){
           this.direction = 'right';

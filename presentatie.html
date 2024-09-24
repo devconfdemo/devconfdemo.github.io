@@ -23,6 +23,15 @@
             color: red;
         }
     </style>
+    <style>
+        .custom-modal {
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          z-index: 50; /* Zorgt ervoor dat het voor andere elementen komt */
+        }
+    </style>
 </head>
 <body x-data="presentatie" data-theme="nord" style="overflow:hidden">
 
@@ -110,6 +119,24 @@
         </ul>
     </div>
 </div>
-
+<template x-if="speakerNotes">
+    <div class="modal-box custom-modal" x-show>
+        <h3 class="text-lg font-bold">Slides</h3>
+        <div class="grid grid-cols-3 gap-4">
+            <template x-for="(slide, index) in slides" :key="slide.id">
+                <div @click="go_to_slide(index)"
+                     class="card bg-base-100 image-full w-100 shadow-xl cursor-pointer">
+                    <figure>
+                        <img
+                                :src="slide.image ? slide.image : 'https://picsum.photos/seed/' + slide.id + '/200'"/>
+                    </figure>
+                    <div class="card-body">
+                        <p x-text="slide.title ? slide.title : slide.id"></p>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>
 </body>
 </html>
