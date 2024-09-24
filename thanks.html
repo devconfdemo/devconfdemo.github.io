@@ -1,38 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <title>Live Demo</title>
-        <script src="/js/configuration.js"></script>
-        <script src="/js/configuration-staging.js"></script>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <title>Live Demo</title>
+    <script src="/js/configuration.js"></script>
+    <script src="/js/configuration-staging.js"></script>
 
-        <link rel="stylesheet" href="/css/draftsman.css" />
-        <script src="/js/framework.js"></script>
-        <script src="/js/cache.js"></script>
-        <script src="https://unpkg.com/@vimesh/ui"></script>
-        <script src="/js/utils.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
-        <script src="https://unpkg.com/alpinejs" defer></script>
+    <link rel="stylesheet" href="/css/draftsman.css" />
+    <script src="/js/framework.js"></script>
+    <script src="/js/cache.js"></script>
+    <script src="https://unpkg.com/@vimesh/ui"></script>
+    <script src="/js/utils.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/alpinejs" defer></script>
 
-        <!-- header -->
-        <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-        <!-- header end -->
+    <!-- header -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- header end -->
 
-    </head>
-    <body x-data x-import="">
+    <style>
+        .menu-icon {
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+<body x-data x-import="">
 
-    <div class="card bg-base-100 w-90 shadow-xl m-5">
-        <div class="card-body">
-            <h2 class="card-title">Bedankt!</h2>
-            <p>
-                Leuk dat je aanwezig was, en bedankt vor je feedback.
-            </p>
+<div class="card bg-base-100 w-90 shadow-xl m-5">
+    <div class="card-body">
+        <h2 class="card-title">Bedankt!</h2>
+        <p>
+            Leuk dat je aanwezig was, en bedankt voor je feedback.
+        </p>
+        <div class="menu bg-base-200 w-56 p-4 rounded-lg shadow-lg">
+            <ul class="menu menu-vertical">
+                <!-- Presentatie -->
+                <li>
+                    <a href="/presentatie" target="_blank">
+                        <i class="fas fa-chalkboard-teacher menu-icon"></i>
+                        Presentatie
+                    </a>
+                </li>
+                <!-- GitHub Repositories -->
+                <li>
+                    <a href="https://github.com/orgs/devconfdemo/repositories" target="_blank">
+                        <i class="fab fa-github menu-icon"></i>
+                        GitHub Repositories
+                    </a>
+                </li>
+                <!-- Draftsman.io Documentation -->
+                <li>
+                    <a href="https://draftsman.io" target="_blank">
+                        <i class="fas fa-book menu-icon"></i>
+                        Draftsman.io (Documentation)
+                    </a>
+                </li>
+                <!-- Draftsman.io Blog -->
+                <li>
+                    <a href="https://papers.draftsman.io" target="_blank">
+                        <i class="fas fa-blog menu-icon"></i>
+                        Papers.draftsman.io (Blog)
+                    </a>
+                </li>
+            </ul>
         </div>
     </div>
+</div>
 
-    </body>
+</body>
 </html>

@@ -29,6 +29,9 @@ const slideConfig = [
     {id: '28-view-queries', animations: 1,reset_animations: 1},
     {id: '29-scenario', animations: 1, reset_animations: 1},
     {id: '30-pipeline', animations: 1, reset_animations: 1},
+    {id: '31-html-page'},
+    {id: '32-form'},
+    {id: '33-feedback'}
 ]
 
 document.addEventListener('alpine:init', () => {

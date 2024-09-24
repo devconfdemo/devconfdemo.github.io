@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Load Google Fonts for Handwritten and Special Elite Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Caveat:wght@700&display=swap" rel="stylesheet">
+
+    <!-- Scripts and styles -->
+    <script src="https://unpkg.com/@vimesh/ui"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/alpinejs" defer></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.7/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="/css/typography.css" rel="stylesheet" type="text/css" />
+    <script src="/js/slide-base.js"></script>
+
+    <!-- Load Ace Editor -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.js"></script>
+
+    <style>
+        .slide-image {
+            height: 80vh;
+        }
+        .editor {
+            height: 80vh;
+            width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body class="bg-transparent flex flex-col items-center justify-center h-screen"
+      x-data
+      @keydown.right.window.debounce="nextSlide"
+      @keydown.left.window="previousSlide">
+
+<!-- Centered and static text -->
+<article class="relative flex flex-col items-center text-center">
+
+    <!-- Multiple Ace Editors -->
+    <div class="grid grid-cols-2 gap-4">
+    <div class="mockup-code w-[49vw]">
+        <div x-init="initEditor('editor1', '/')" id="editor1" class="editor"></div>
+    </div>
+    <div class="mockup-code w-[49vw]">
+        <div x-init="initEditor('editor2', '/prepared-statements/views/Feedback/filter.txt')" id="editor2" class="editor"></div>
+    </div>
+    </div>
+</article>
+
+<script>
+    function initEditor(editorId, filePath) {
+        // Initialize Ace Editor for each editor instance
+        const editor = ace.edit(editorId);
+        editor.setTheme("ace/theme/monokai");
+        editor.session.setMode("ace/mode/html");
+        editor.setReadOnly(true);  // Set the editor to read-only
+
+        // Function to load HTML content from a file
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', filePath, true);  // Open the file (replace filePath with the actual file path)
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                // Load the content into the specified Ace Editor
+                editor.setValue(xhr.responseText, -1);  // Load HTML into Ace Editor and move cursor to start
+            } else {
+                console.error('Error loading file:', xhr.statusText);
+                editor.setValue('Error loading file.', -1);
+            }
+        };
+
+        xhr.onerror = function () {
+            console.error('Request error.');
+            editor.setValue('Failed to load file.', -1);
+        };
+
+        xhr.send();  // Send the request to load the file
+    }
+</script>
+</body>
+</html>
