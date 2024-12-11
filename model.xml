@@ -147,6 +147,7 @@
 				<expect-value name="score" type="Int" value="4"></expect-value>
 				<expect-value name="oneWord" type="String" value="Top"></expect-value>
 			</activity>
+			<activity type="wait" path="" view="" milliseconds="1" description="Test"></activity>
 		</scenario>
 	</functional-scenarios>
 </draftsman>
