@@ -147,10 +147,6 @@
 				<expect-value name="score" type="Int" value="4"></expect-value>
 				<expect-value name="oneWord" type="String" value="Top"></expect-value>
 			</activity>
-			<activity path="-select-" type="set-variables" description="Test">
-				<input name="hello" type="String" value=""></input>
-				<input name="nested" type="Nested" value='[{"key":"value","hello":"value"},{"key":"value"}]'></input>
-			</activity>
 		</scenario>
 	</functional-scenarios>
 </draftsman>
