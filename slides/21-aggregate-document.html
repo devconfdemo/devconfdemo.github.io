@@ -11,12 +11,9 @@
           if (status == "init"){status = "ready"}
           else if (status == "ready"){
             let iframe = document.getElementById("ide");
-            iframe.src = "https://tracepaper.draftsman.io/";
+            iframe.src = "https://tracepaper.draftsman.io#domain/Core/Feedback/root.xml";
             document.getElementById("image").hidden = true;
             iframe.hidden = false;
-            setTimeout(function(){
-                iframe.contentWindow.postMessage({type: "open", file:"domain/Core/Feedback"},"*");
-            },1000);
           }
         });
     }

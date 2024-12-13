@@ -4,12 +4,9 @@
       let file = "scenarios/Demo.xml";
       window.load_frame = function(){
         let iframe = document.getElementById("ide");
-        iframe.src = "https://tracepaper.draftsman.io/";
+        iframe.src = "https://tracepaper.draftsman.io#"+file;
         document.getElementById("image").hidden = true;
         iframe.hidden = false;
-        setTimeout(function(){
-            iframe.contentWindow.postMessage({type: "open", file:file},"*");
-        },1000);
       }
       window.addEventListener('message', function(message) {
           if (status == "init"){status = "ready"}

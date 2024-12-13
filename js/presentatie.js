@@ -31,7 +31,8 @@ const slideConfig = [
     {id: '30-pipeline', title: 'Pipeline', animations: 1, reset_animations: 1, image: '/assets/pipeline.jpg'},
     {id: '31-html-page', title: 'HTML Page'},
     {id: '32-form', title: 'Form'},
-    {id: '33-feedback', title: 'Feedback'}
+    {id: '33-feedback', title: 'Feedback'},
+    {id: '34-login', title: 'Login'}
 ];
 
 document.addEventListener('alpine:init', () => {
