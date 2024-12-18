@@ -56,10 +56,29 @@ document.addEventListener('alpine:init', () => {
           }
           this.isFullScreen = !this.isFullScreen;
         },
-        trigger_slide_animation(){
+        node: null,
+        broadcast: null,
+        async init(){
+            this.node = await webpeerjs.createWebpeer();
+            const [broadcast,listen,onmembersupdate] = this.node.joinRoom('devconf-presentatie');
+            this.broadcast = broadcast;
+            setInterval(this.sync.bind(this),3000);
+        },
+        sync(){
+            if (this.node.status == "connected"){
+                this.broadcast(this.slides[this.currentIndex].id);
+            }
+        },
+        async trigger_slide_animation(){
             location.hash = this.currentIndex + 1;
-            let iframe = document.getElementById('slide-content-' + this.currentIndex);
-            iframe.contentWindow.postMessage('initialize', '*');
+            let iframe = null;
+            try{
+                iframe = document.getElementById('slide-content-' + this.currentIndex);
+                iframe.contentWindow.postMessage('initialize', '*');
+                this.sync();
+            } catch {
+                setTimeout(this.trigger_slide_animation.bind(this),100);
+            }
         },
         nextSlide() {
           if (this.slides[this.currentIndex].animations){
@@ -68,16 +87,16 @@ document.addEventListener('alpine:init', () => {
             return;
           } else if (this.slides[this.currentIndex].reset_animations){
             this.slides[this.currentIndex].animations = this.slides[this.currentIndex].reset_animations;
-            let iframe = document.getElementById('slide-content-' + this.currentIndex);
-            iframe.contentWindow.location.reload();
+//            let iframe = document.getElementById('slide-content-' + this.currentIndex);
+//            iframe.contentWindow.location.reload();
           }
           this.fastForward();
         },
         previousSlide() {
             if (this.slides[this.currentIndex].reset_animations){
             this.slides[this.currentIndex].animations = this.slides[this.currentIndex].reset_animations;
-            let iframe = document.getElementById('slide-content-' + this.currentIndex);
-            iframe.contentWindow.location.reload();
+//            let iframe = document.getElementById('slide-content-' + this.currentIndex);
+//            iframe.contentWindow.location.reload();
           }
           this.direction = 'left';
           this.currentIndex = (this.currentIndex - 1 + this.slides.length) % this.slides.length;
@@ -106,7 +125,44 @@ document.addEventListener('alpine:init', () => {
             this.speakerNotes = true;
         }
       }));
+    Alpine.data('notes',() => {
+        return {
+            slide: "1-titel",
+            content: "",
+            fc: "",
+            async init(){
+                this.fetch_content();
+                const node = await webpeerjs.createWebpeer()
 
+                console.log(`My node id : ${node.id}`)
+
+                const [broadcast,listen,onmembersupdate] = node.joinRoom('devconf-presentatie')
+
+                listen((message,id) => {
+                    console.log(`Message from ${id} : ${message}`)
+                    this.slide = message;
+                    this.fetch_content();
+                });
+            },
+            fetch_content(){
+                if (this.fc == this.slide){return}
+                fetch('/slides/' + this.slide + '.md')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Netwerkfout bij ophalen van bestand');
+                        }
+                        return response.text(); // Voor tekstbestanden
+                    })
+                    .then(data => {
+                        this.content = data;
+                        this.fc = this.slide;
+                    })
+                    .catch(error => {
+                        console.error('Er is een fout opgetreden:', error);
+                    });
+            }
+        }
+    });
     window.addEventListener('message', function(event) {
         console.log('Message from iframe:', event.data);
         if (event.data === 'next') {
@@ -164,4 +220,9 @@ function timer() {
             }
         }
     };
+}
+
+function sleep(ms) {
+    console.trace(`Sleep ${ms} milliseconds`);
+    return new Promise(resolve => setTimeout(resolve, ms));
 }

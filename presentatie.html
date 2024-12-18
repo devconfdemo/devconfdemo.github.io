@@ -12,6 +12,7 @@
     <script src="/js/presentatie.js"></script>
     <link href="/css/presentation-background.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/webpeerjs@0.1/dist/umd/webpeerjs.min.js"></script>
     <style>
         .green {
             color: green;
@@ -59,10 +60,13 @@
                 <!-- Card with margin -->
                 <div class="card w-[99%] h-[99%]">
                     <div class="card-body">
-                        <iframe height="100%" :src="'/slides/' + slide.id"
-                                :id="'slide-content-' + index"
-                                style="background: transparent; opacity: 1;"
-                                allowtransparency="true" class="bg-transparent"></iframe>
+                        <template x-if="currentIndex === index">
+                            <iframe height="100%" :src="'/slides/' + slide.id"
+                                    :id="'slide-content-' + index"
+                                    style="background: transparent; opacity: 1;"
+                                    allowtransparency="true" class="bg-transparent"></iframe>
+                        </template>
+
                     </div>
                 </div>
 
