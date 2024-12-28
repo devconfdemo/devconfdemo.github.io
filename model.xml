@@ -132,7 +132,7 @@
 			<activity id="wjJU3t" fail-silent="true" group-name="#'administrator'" type="add-user-to-iam-group" username="#'system-user'"></activity>
 		</notifier>
 	</notifiers>
-	<functional-scenarios clean-db="true" clean-iam="true" minimum-event-coverage="80" minimum-view-coverage="80">
+	<functional-scenarios clean-db="true" clean-iam="true" minimum-event-coverage="85" minimum-view-coverage="85">
 		<scenario name="Demo" extends="">
 			<activity path="Feedback.create" type="mutation" description="Maak feedback item aan">
 				<input name="userId" type="String" value="ID123"></input>
