@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="/css/draftsman.css" />
     <script src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
     <script src="/js/tp/alpine.js" defer></script>
     <script src="/js/slide-player.js"></script>
 
@@ -38,29 +39,34 @@
 
         <!-- Open the modal using ID.showModal() method -->
         <dialog id="overview" class="modal modal-bottom sm:modal-middle">
-            <div class="modal-box sm:w-11/12 max-w-5xl">
+            <div class="modal-box sm:w-11/12 max-w-5xl max-h-[40vh]">
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <template x-if="thumbs">
                         <template x-for="(s, index) in pauses" :key="s">
-                                <div class="relative">
-                                    <!-- Slide nummer -->
-                                    <div class="absolute top-2 left-2 bg-base-100 text-sm text-base-content px-2 py-1 rounded shadow">
-                                        Slide <span x-text="index + 1"></span>
-                                    </div>
+                            <div class="relative" x-data="{ visible: false }" x-intersect.once="visible = true">
+                                <!-- Slide nummer -->
+                                <div class="absolute top-2 left-2 bg-base-100 text-sm text-base-content px-2 py-1 rounded shadow">
+                                    Slide <span x-text="index + 1"></span>
+                                </div>
 
-                                    <!-- Thumbnail video -->
+                                <!-- Thumbnail video -->
+                                <template x-if="visible">
                                     <video
-                                            class="cursor-pointer"
-                                            @click="video.currentTime = s;document.getElementById('overview').close()"
-                                            class="rounded shadow-md w-full aspect-video object-cover"
-                                            loading="lazy"
+                                            class="rounded shadow-md w-full aspect-video object-cover cursor-pointer"
+                                            @click="video.currentTime = s; $refs.overview.close()"
                                             preload="metadata"
                                             muted
                                             playsinline
-                                            :src="`${src}#t=${s}`"
-                                    ></video>
-                                </div>
+                                            :src="`${src}#t=${s}`">
+                                    </video>
+                                </template>
+
+                                <!-- (optioneel) skeleton placeholder -->
+                                <template x-if="!visible">
+                                    <div class="rounded w-full aspect-video bg-base-300 animate-pulse"></div>
+                                </template>
+                            </div>
                         </template>
                     </template>
                 </div>
