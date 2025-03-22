@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 <body class="bg-base-200  h-[100vh]"
-      @keydown.right.window.debounce="continuePresentation"
+      @keydown.right.window.debounce="resumePlayback"
       @keydown.left.window="goBack"
       x-data="slidePlayer">
 
@@ -24,12 +24,13 @@
            style="object-fit: cover;"
            class="w-[100vw] max-h-[95vh]"
            :controls="enableControls"
-           @click="continuePresentation"
+           @click="resumePlayback"
            id="slide-video"
            @timeupdate="updateTime"
            :src="src"></video>
 
-    <div class="w-full flex flex-col md:flex-row justify-center items-center gap-4 px-4 py-3 bg-base-200 border-t border-base-300 shadow-inner text-center">
+    <div
+         class="w-full flex flex-col md:flex-row justify-center items-center gap-4 px-4 py-3 bg-base-200 border-t border-base-300 shadow-inner text-center">
         <button class="btn btn-sm w-full md:w-auto" @click="goBack" :disabled="busy">
             <i class="fas fa-arrow-left mr-2"></i>
             Previous
@@ -38,28 +39,32 @@
         <!-- Open the modal using ID.showModal() method -->
         <dialog id="overview" class="modal modal-bottom sm:modal-middle">
             <div class="modal-box sm:w-11/12 max-w-5xl">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <template x-for="(s, index) in pauses" :key="s">
-                        <div class="relative">
-                            <!-- Slide nummer -->
-                            <div class="absolute top-2 left-2 bg-base-100 text-sm text-base-content px-2 py-1 rounded shadow">
-                                Slide <span x-text="index + 1"></span>
-                            </div>
 
-                            <!-- Thumbnail video -->
-                            <video
-                                    class="cursor-pointer"
-                                    @click="video.currentTime = s;document.getElementById('overview').close()"
-                                    class="rounded shadow-md w-full aspect-video object-cover"
-                                    loading="lazy"
-                                    preload="metadata"
-                                    muted
-                                    playsinline
-                                    :src="`${src}#t=${s}`"
-                            ></video>
-                        </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <template x-if="thumbs">
+                        <template x-for="(s, index) in pauses" :key="s">
+                                <div class="relative">
+                                    <!-- Slide nummer -->
+                                    <div class="absolute top-2 left-2 bg-base-100 text-sm text-base-content px-2 py-1 rounded shadow">
+                                        Slide <span x-text="index + 1"></span>
+                                    </div>
+
+                                    <!-- Thumbnail video -->
+                                    <video
+                                            class="cursor-pointer"
+                                            @click="video.currentTime = s;document.getElementById('overview').close()"
+                                            class="rounded shadow-md w-full aspect-video object-cover"
+                                            loading="lazy"
+                                            preload="metadata"
+                                            muted
+                                            playsinline
+                                            :src="`${src}#t=${s}`"
+                                    ></video>
+                                </div>
+                        </template>
                     </template>
                 </div>
+
             </div>
 
             <form method="dialog" class="modal-backdrop">
@@ -67,7 +72,7 @@
             </form>
         </dialog>
         <div id="indicator"
-             onclick="overview.showModal()"
+             @click="thumbs=true;document.getElementById('overview').showModal()"
              class="badge badge-outline text-sm px-3 py-2 navb cursor-pointer">
             Slide: <span x-text="pauses.indexOf(stoppedOn) + 1"></span> /
             <span x-text="pauses.length"></span>
@@ -78,7 +83,7 @@
             <span>video controls</span>
         </label>
 
-        <button class="btn btn-sm w-full md:w-auto navb" @click="continuePresentation" :disabled="busy">
+        <button class="btn btn-sm w-full md:w-auto navb" @click="resumePlayback" :disabled="busy">
             Next
             <i class="fas fa-arrow-right ml-2"></i>
         </button>
