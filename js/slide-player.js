@@ -65,6 +65,41 @@ document.addEventListener('alpine:init', () => {
         });
       },
 
+      pausePlayback(retries = 3) {
+        const tryPause = () => {
+          if (this.video.readyState >= 3) {
+            try {
+              this.video.pause();
+              return true;
+            } catch (err) {
+              console.warn('Pause failed:', err);
+              return false;
+            }
+          }
+          return false;
+        };
+
+        if (tryPause()) return;
+
+        // Als het nog niet lukt, probeer het met retries
+        if (retries > 0) {
+          console.log(`Retrying pause... (${retries} left)`);
+          setTimeout(() => {
+            this.pausePlayback(retries - 1);
+          }, 100); // probeer het opnieuw na 100ms
+        } else {
+          // Laatste redmiddel: luister op 'canplay' (iOS)
+          console.log("Falling back to 'canplay' listener for pause");
+          this.video.addEventListener(
+            'canplay',
+            () => {
+              this.video.pause();
+            },
+            { once: true }
+          );
+        }
+      },
+
       goBack() {
         if (this.busy) return;
         this.busy = true;
@@ -89,7 +124,7 @@ document.addEventListener('alpine:init', () => {
         const point = Math.floor(this.current);
 
         if (point !== this.stoppedOn && this.isPausePoint(point)) {
-          this.video.pause();
+          this.pausePlayback();
           this.video.playbackRate = 1;
           this.stoppedOn = point;
           this.setIndicatorState(true);
