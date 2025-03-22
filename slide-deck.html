@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <title>The story behind Tracepaper slides</title>
+
+    <link rel="stylesheet" href="/css/draftsman.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+    <script src="/js/tp/alpine.js" defer></script>
+    <script src="/js/slide-player.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.10.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body class="bg-base-200  h-[100vh]"
+      @keydown.right.window.debounce="continuePresentation"
+      @keydown.left.window="goBack"
+      x-data="slidePlayer">
+
+    <video muted
+           style="object-fit: cover;"
+           class="w-[100vw] max-h-[95vh]"
+           :controls="enableControls"
+           @click="continuePresentation"
+           id="slide-video"
+           @timeupdate="updateTime"
+           :src="src"></video>
+
+    <div class="w-full flex flex-col md:flex-row justify-center items-center gap-4 px-4 py-3 bg-base-200 border-t border-base-300 shadow-inner text-center">
+        <button class="btn btn-sm w-full md:w-auto" @click="goBack" :disabled="busy">
+            <i class="fas fa-arrow-left mr-2"></i>
+            Previous
+        </button>
+
+        <!-- Open the modal using ID.showModal() method -->
+        <dialog id="overview" class="modal modal-bottom sm:modal-middle">
+            <div class="modal-box sm:w-11/12 max-w-5xl">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <template x-for="(s, index) in pauses" :key="s">
+                        <div class="relative">
+                            <!-- Slide nummer -->
+                            <div class="absolute top-2 left-2 bg-base-100 text-sm text-base-content px-2 py-1 rounded shadow">
+                                Slide <span x-text="index + 1"></span>
+                            </div>
+
+                            <!-- Thumbnail video -->
+                            <video
+                                    class="cursor-pointer"
+                                    @click="video.currentTime = s;document.getElementById('overview').close()"
+                                    class="rounded shadow-md w-full aspect-video object-cover"
+                                    loading="lazy"
+                                    preload="metadata"
+                                    muted
+                                    playsinline
+                                    :src="`${src}#t=${s}`"
+                            ></video>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <form method="dialog" class="modal-backdrop">
+                <button>close</button>
+            </form>
+        </dialog>
+        <div id="indicator"
+             onclick="overview.showModal()"
+             class="badge badge-outline text-sm px-3 py-2 navb cursor-pointer">
+            Slide: <span x-text="pauses.indexOf(stoppedOn) + 1"></span> /
+            <span x-text="pauses.length"></span>
+        </div>
+
+        <label class="flex items-center gap-2 cursor-pointer text-sm">
+            <input type="checkbox" class="checkbox checkbox-sm" x-model="enableControls" />
+            <span>video controls</span>
+        </label>
+
+        <button class="btn btn-sm w-full md:w-auto navb" @click="continuePresentation" :disabled="busy">
+            Next
+            <i class="fas fa-arrow-right ml-2"></i>
+        </button>
+    </div>
+
+</body>
+</html>
